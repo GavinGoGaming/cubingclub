@@ -4,8 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quadpad Export</title>
+<title>undefined</title>
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css">
 <style>
     /* CSS */
 html, body {
@@ -27,6 +28,70 @@ html, body {
     text-decoration: underline;
     cursor: pointer;
 }
+.times {
+    display: inline-flex;
+    flex-direction: column;
+    border: 1px solid #ffffff0f;
+    border-radius: 5px;
+    padding: 4px;
+    width: auto;
+}
+.row {
+    border: 1px solid #ffffff0f;
+    padding: 4px;
+    display: flex;
+    gap: 2px;
+}
+.row button {
+    background: #222;
+    border-radius: 3px;
+    border: 1px solid #ffffff2a;
+    color: white;
+    transition: background 0.1s ease;
+    font-family: Inter;
+}
+.row .clear i {
+    color: rgb(255, 92, 92);
+}
+.row .add i {
+    color: rgb(107, 255, 107);
+}
+.row .delete i {
+    color: rgb(255, 126, 126);
+}
+.row .theme i {
+    color: rgb(82, 200, 255);
+}
+.row button:disabled {
+    border-color: #ffffff0a;
+    filter: grayscale(0.9);
+}
+.row button:not(:disabled):hover {
+    background: #333;
+}
+.deleting {
+    animation: deleting 0.5s ease forwards;
+}
+@keyframes deleting {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+.times span b {
+    padding-right: 5px;
+}
+.row:first-of-type {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.row:last-of-type {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
 </style>
 </head>
 <body>
@@ -35,6 +100,15 @@ html, body {
 <br>
 <i class="a"></i>
 <h2></h2>
+<div class="times">
+
+    <span><b>Avg:</b><span id="avg"></span></span>
+    <div class="row keep">
+        <button class="add"><i class="fa-solid fa-message-plus"></i></button>
+        <button class="clear"><i class="fa-solid fa-trash-xmark"></i></button>
+        <button class="theme" disabled><i class="fa-solid fa-palette"></i></button>
+    </div>
+</div>
 <script type="text/javascript">
     const message = document.querySelector('.a');
 const h3 = document.querySelector('h2');
@@ -46,6 +120,98 @@ var listeningforkey = false;
 var jwlfk = false;
 var timeStart;
 var finalToDisplay = "0";
+const times = document.querySelector('.times');
+
+function addTimeItem(time) {
+    if (!time) time = '0'; // 0s
+    const row = document.createElement('div');
+    row.className = 'row';
+    
+    const timeDisplay = document.createElement('span');
+    timeDisplay.textContent = time + 's';
+    
+    const deleteButton = document.createElement('button');
+    const icon = document.createElement('i');
+    icon.className="fa-solid fa-trash";
+    deleteButton.className='delete';
+    deleteButton.appendChild(icon);
+    deleteButton.onclick = () => {
+        row.classList.add('deleting');
+        deleteButton.remove();
+        setTimeout(()=>{
+            row.remove();
+        },600);
+        removeTime(time);
+    };
+    
+    row.appendChild(timeDisplay);
+    row.appendChild(deleteButton);
+    times.appendChild(row);
+}
+const clear = document.querySelector('.clear');
+const add = document.querySelector('.add');
+clear.addEventListener('click',()=>{
+    if(confirm("Clear all times?")) {
+        window.localStorage.setItem('cubetime', []);
+    }
+});
+add.addEventListener('click', () => {
+    const time = prompt("Input time (ex. 1.20)", "");
+    try {
+        parseFloat(time);
+        addTimeToLS(time);
+        addTimeItem(time);
+    } catch(ex) {
+        alert("Not a time.");
+    }
+});
+function updateAverage(times) {
+    if(times.length < 1) {
+        document.querySelector('#avg').innerText = 'None'
+    }
+    let timesAsNumbers = times.map(time=>parseFloat(time));
+    const average = timesAsNumbers.reduce((a, b) => a + b) / timesAsNumbers.length;
+    document.querySelector('#avg').innerText = average.toFixed(3);
+}
+function removeTime(valueToRemove) {
+    if (!localStorage.getItem("cubetime")) {
+        localStorage.setItem('cubetime', []);
+    }
+    const storedArray = localStorage.getItem("cubetime");
+    const array = storedArray ? JSON.parse(storedArray) : [];
+    const updatedArray = array.filter(item => item !== valueToRemove);
+    localStorage.setItem('cubetime', JSON.stringify(updatedArray));
+}
+function addTimeToLS(valueToRemove) {
+    if (!localStorage.getItem("cubetime")) {
+        localStorage.setItem('cubetime', []);
+    }
+    const storedArray = localStorage.getItem("cubetime");
+    const array = storedArray ? JSON.parse(storedArray) : [];
+    array.push(valueToRemove);
+    localStorage.setItem('cubetime', JSON.stringify(array));
+}
+function saveTime(time) {
+    if (!localStorage.getItem("cubetime")) {
+        localStorage.setItem('cubetime', []);
+    }
+    addTimeToLS(time);
+    document.querySelectorAll('.row:not(.keep)', x=>x.remove());
+    loadTimes();
+    updateAverage(JSON.parse(localStorage.getItem("cubetime")));
+}
+function loadTimes() {
+    if (!localStorage.getItem("cubetime")) {
+        localStorage.setItem('cubetime', []);
+    }
+    const storedArray = localStorage.getItem("cubetime");
+    const array = storedArray ? JSON.parse(storedArray).reverse() : [];
+    array.forEach(time => {
+        addTimeItem(time);
+    });
+    updateAverage(array);
+}
+
 key.addEventListener('click', ()=>{
     listeningforkey = true;
     timing = false;
@@ -61,15 +227,20 @@ document.body.addEventListener('keydown', (e) => {
         over = false;
         return;
     }
+    if(e.key == ' ') {
+        e.preventDefault();
+    }
     if (e.key == selkey) {
         if(timing) {
             if (over) return;
             over = true;
             document.documentElement.className = "done";
             var curTime = Date.now();
-            var time = `${(curTime - timeStart)/1000}` + "s";
+            var threetime = `${(curTime - timeStart) / 1000}`;
+            var time = `${threetime}` + "s";
             finalToDisplay = time;
             message.innerText = "Final time: " + time;
+            saveTime(threetime);
         }else {
             message.innerText = "Charging... (Release to start)";
             document.documentElement.className = "charge";
@@ -102,7 +273,9 @@ setInterval(()=>{
     }else {
         h3.innerText = "Final Time: " + finalToDisplay;
     }
-},100)
+},100);
+
+document.addEventListener('DOMContentLoaded', loadTimes);
 </script>
     
 </body>
