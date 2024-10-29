@@ -196,8 +196,7 @@ function saveTime(time) {
         localStorage.setItem('cubetime', []);
     }
     addTimeToLS(time);
-    document.querySelectorAll('.row:not(.keep)', x=>x.remove());
-    loadTimes();
+    addTimeItem(time);
     updateAverage(JSON.parse(localStorage.getItem("cubetime")));
 }
 function loadTimes() {
@@ -205,7 +204,7 @@ function loadTimes() {
         localStorage.setItem('cubetime', []);
     }
     const storedArray = localStorage.getItem("cubetime");
-    const array = storedArray ? JSON.parse(storedArray).reverse() : [];
+    const array = storedArray ? JSON.parse(storedArray) : [];
     array.forEach(time => {
         addTimeItem(time);
     });
