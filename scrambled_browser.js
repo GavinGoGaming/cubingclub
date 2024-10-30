@@ -1,18 +1,6 @@
 (function(global) {
     const turnMoves = ['R', 'U', 'L', 'D', 'F', 'B'];
 
-    function seedrandom(seed) {
-        let m = 0x100000000; // 2^32
-        let a = 0x5DEECE66D; // 2^48
-        let c = 0xB; // 2^24
-        let state = (seed + c) % m;
-
-        return function() {
-            state = (state * a + c) % m;
-            return (state >>> 16) / m;
-        };
-    }
-
     function generateScrambleSync(count, size = 3, hash) {
         hash = hash || (new Date().getTime()).toString();
         const random = seedrandom(hash);
@@ -20,15 +8,16 @@
         let hasDone = [];
         let scramble = [];
 
-        for (let i = 0; i < count * 3; i += 3) {
-            let move = turnMoves[Math.floor(random() * turnMoves.length)];
+        for (let i = 0; i < count; i++) {
+            let move;
             let attempts = 0;
 
-            while (hasDone.includes(move)) {
-                attempts++;
+            // Generate a unique move
+            do {
                 move = turnMoves[Math.floor(random() * turnMoves.length)];
+                attempts++;
                 if (attempts > 100) break; // Prevent infinite loop
-            }
+            } while (hasDone.includes(move));
 
             // Prevent opposite moves
             if (['U', 'D'].includes(move)) {
@@ -57,6 +46,19 @@
             scramble: scramble.join(' '),
             token: hash,
             size: count
+        };
+    }
+
+    function seedrandom(seed) {
+        // Simple PRNG based on the seed
+        let m = 0x100000000; // 2^32
+        let a = 0x5DEECE66D; // 2^48
+        let c = 0xB; // 2^24
+        let state = (seed.charCodeAt(0) || 0) + c;
+
+        return function() {
+            state = (state * a + c) % m;
+            return (state >>> 16) / m;
         };
     }
 
