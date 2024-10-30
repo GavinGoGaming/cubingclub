@@ -7,7 +7,7 @@
         for(var x = 0; x < amount; x++){
             var redoMove = ()=>{
                 var move = (turnMoves[Math.floor(Math.random()*turnMoves.length)]+`${Math.random()>0.5?'\'':''}`);
-                if(move.contains(lastMove.replaceAll('\'',''))) {
+                if(move.includes(lastMove.replaceAll('\'',''))) {
                     return redoMove();
                 }
                 return move;
