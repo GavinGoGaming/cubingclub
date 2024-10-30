@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>undefined</title>
+<title>Timer | Cubing Club</title>
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css">
 <style>
@@ -92,21 +92,126 @@ html, body {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
+
+.settings {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    background-color: #2222220a;
+    backdrop-filter: blur(50px);
+    border: 5px solid #ffffff1f;
+    box-sizing: border-box;
+    display: flex;
+    padding: 5px;
+}
+.left, .right {
+    padding: 2px;
+}
+.left {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    gap: 2px;
+    border-right: 4px solid #ffffff1f;
+}
+.left .item {
+    width: calc(100% - 5px);
+    height: 25px;
+    display: flex;
+    padding: 3px;
+    padding-left: 5px;
+    align-items: center;
+    border: 1px solid #ffffff0a;
+    box-sizing: border-box;
+    gap: 5px;
+    border-radius: 6px;;
+}
+.left .item[disabled] {
+    color: #aeaeae;
+    border-color: #ffffff03;
+}
+.left .item:not([disabled]):hover {
+    background: #373737;
+}
+.left .item.active {
+    background: #464646;
+}
+.right {
+    width: 100%;
+    padding-left: 8px;
+}
+.close {
+    top: -10px;
+    right: -10px;
+    width: 25px;
+    height: 25px;
+    background: #322;
+    position: absolute;
+    border: 1px solid rgba(240, 128, 128, 0.573);
+    color: rgb(240, 128, 128);
+    border-radius: 50%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.close > i {
+    transition: scale 0.1s ease;
+}
+.close:hover {
+    background: #522;
+}
+.close:hover > i {
+    scale: 1.2;
+    transform: translateX(0.5px);
+}
+.settings:not(.active) { 
+    display: none;
+}
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+}
+.settings-section:not(.current) {
+    display: none;
+}
 </style>
 </head>
 <body>
 <h1>Cube Timer</h1>
-<i>hold selected key, release to start, click key to stop. Key: <i class="edit">Space</i></i>
+<span>Hold <i class="edit">Space</i> - Release to start - Press to end</span>
 <br>
 <i class="a"></i>
 <h2></h2>
 <div class="times">
-
     <span><b>Avg:</b><span id="avg"></span></span>
     <div class="row keep">
         <button class="add"><i class="fa-solid fa-message-plus"></i></button>
         <button class="clear"><i class="fa-solid fa-trash-xmark"></i></button>
-        <button class="theme" disabled><i class="fa-solid fa-palette"></i></button>
+        <button class="theme toggle-settings"><i class="fa-solid fa-gear"></i></button>
+    </div>
+</div>
+
+<div class="settings">
+    <div class="close toggle-settings"><i class="fa-solid fa-xmark"></i></div>
+    <div class="left">
+        <b>Settings</b>
+        <div class="item active" data-section="theme"><i class="fa-solid fa-palette"></i>Theme</div>
+        <div class="item" disabled><i class="fa-solid fa-gear"></i>Settings</div>
+        <div class="item" data-section="data"><i class="fa-solid fa-books"></i>Data</div>
+    </div>
+    <div class="right">
+        <div class="settings-section current" id="theme">
+            <b>Theme Settings</b>
+        </div>
+        <div class="settings-section" id="data">
+            <b>Data Settings</b>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -121,6 +226,23 @@ var jwlfk = false;
 var timeStart;
 var finalToDisplay = "0";
 const times = document.querySelector('.times');
+
+const settings = document.querySelector('.settings');
+const toggles = document.querySelectorAll('.toggle-settings');
+toggles.forEach(x=>{
+    x.addEventListener('click',()=>{
+        settings.classList.toggle('active');
+    })
+})
+const items = [...document.querySelectorAll('.item')].filter(x => (x.getAttribute('disabled') == null));
+items.forEach(menuItem =>{
+    menuItem.addEventListener('click', ()=>{
+        document.querySelectorAll('.settings-section').forEach(x => { x.classList.remove('current') });
+        document.querySelector('.settings-section#' + menuItem.dataset.section).classList.add('current');
+        document.querySelectorAll('.item').forEach(x=>{x.classList.remove('active')});
+        menuItem.classList.add('active');
+    });
+});
 
 function addTimeItem(time) {
     if (!time) time = '0'; // 0s
@@ -275,6 +397,12 @@ setInterval(()=>{
 },100);
 
 document.addEventListener('DOMContentLoaded', loadTimes);
+document.addEventListener('DOMContentLoaded', ()=>{
+    var link = document.createElement('link');
+    link.href ="https://raw.githubusercontent.com/GavinGoGaming/cubingclub/refs/heads/main/club_logo.png";
+    link.rel="shortcut icon";
+    document.head.appendChild(link);
+});
 </script>
     
 </body>
