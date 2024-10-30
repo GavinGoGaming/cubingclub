@@ -2,9 +2,18 @@
     const turnMoves = ['R', 'U', 'L', 'D', 'F', 'B'];
     global.generateScramble=(amount, cube)=>{
         let moves = [];
+        var lastMove = "";
 
         for(var x = 0; x < amount; x++){
-            moves.push(turnMoves[Math.floor(Math.random()*turnMoves.length)]+`${Math.random()>0.5?'\'':''}`);
+            var redoMove = ()=>{
+                var move = (turnMoves[Math.floor(Math.random()*turnMoves.length)]+`${Math.random()>0.5?'\'':''}`);
+                if(move.contains(lastMove.replaceAll('\'',''))) {
+                    return redoMove();
+                }
+                return move;
+            }
+
+            lastMove = redoMove();
         }
 
         var scramble = "";
