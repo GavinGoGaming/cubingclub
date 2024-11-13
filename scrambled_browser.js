@@ -1,24 +1,21 @@
-(function(global) {
-    const turnMoves = ['R', 'U', 'L', 'D', 'F', 'B'];
-    global.generateScramble=(amount, cube)=>{
-        let moves = [];
-        var lastMove = "";
-
-        for(var x = 0; x < amount; x++){
-            var redoMove = ()=>{
-                var move = (turnMoves[Math.floor(Math.random()*turnMoves.length)]+`${Math.random()>0.5?'\'':''}`);
-                if(move.includes(lastMove.replaceAll('\'',''))) {
-                    return redoMove();
-                }
-                return move;
-            }
-
-            lastMove = redoMove();
+// made for cubingclub site, free to use. genScrable# returns string[], scramble# returns string
+const moves = ["U", "F", "L", "B", "R", "D"];
+function genScramble(amount, size) {
+    let shkr = [];
+    var lastMove = "";
+    for (var x = 0; x < amount; x++) {
+        function genMove() {
+            var move = moves[Math.floor(moves.length * Math.random())];
+            if(move == lastMove) return genMove();
+            lastMove = move;
+            var possibles = ["2", "'", ""];
+            var add = possibles[Math.floor(possibles.length * Math.random())];
+            return (`${move}${add}`);
         }
-
-        var scramble = "";
-        moves.forEach(move => {scramble+=move+" "});
-
-        return {moves, scramble};
+        shkr.push(genMove());
     }
-})(window);
+    return shkr;
+}
+function scramble(amount, size) {
+    return genScramble(amount, size).join(" ");
+}
