@@ -89,7 +89,7 @@ function genScramble(amount, size) {
             }
             lastMove = move;
             var possibles = ["'", ""];
-            if(size != "pyra") {
+            if(!["skewb", "pyra"].includes(size)) {
                 possibles.push("2");
             }
             var add = possibles[Math.floor(possibles.length * Math.random())];
