@@ -28,87 +28,121 @@ h1 {
     font-family: JetBrains Mono, monospace;
     letter-spacing: -2px;;
 }
+select {
+    font-family: Inter;
+    background: #222;
+    border: 1px solid #ffffff10;
+    margin: 0 2px;
+    color: white;
+    padding: 4px;
+    border-radius: 5px;
+    outline-color: #ffffff40 !important;
+}
+.inner-pop {
+    padding: 20px;
+    border-radius: 16px;
+    background-color: #222;
+    align-items: center;
+    display: flex;
+}
+.hidden { display: none !important; }
+.popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(15px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
 </style>
 </head>
 <body>
 <!--- HTML --->
-<span>[BETA]</span>
+<span>[V2]</span>
 <b>SPMS Cubing Club Scrambler</b>
-<h1>Awaiting user input...</h1>
+<h1>Click Scramble to Begin</h1>
 <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>
+<script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+<script type="module">
+    import { randomScrambleForEvent } from "//cdn.cubing.net/v0/js/cubing/scramble";
+    function upd() {
+        var x = document.querySelector('#puzzleSel').value;
+        var h1 = document.querySelector('h1');
+        h1.textContent = "⏳ Loading..."
+        randomScrambleForEvent(x).then(s => {
+            h1.textContent = s;
+            window.updPlayer(s);
+        });
+    }
+    window.upd = upd;
+</script>
 
-<button onclick="upd(2)">Scrabmle 2x2</button>
-<button onclick="upd(3)">Scrabmle 3x3</button>
-<button onclick="upd('pyra')">Pyraminx</button>
-<button onclick="upd('skewb')">Skewb</button>
+<div class="popup hidden">
+    <button onclick="window.togglePop()">Close Cube Player</button>
+    <div class="inner-pop">
+        <twisty-player alg="" background="none" puzzle="3x3x3" />
+    </div>
+</div>
+
+<select name="cube" id="puzzleSel">
+    <option value="333" selected>3x3x3</option>
+    <option value="222">2x2x2</option>
+    <option value="444">4x4x4</option>
+    <option value="555">5x5x5</option>
+    <option value="666">6x6x6</option>
+    <option value="777">7x7x7</option>
+    <option value="333bf">3x3x3 Blindfolded</option>
+    <option value="333fm">3x3x3 Fewest Moves</option>
+    <option value="333oh">3x3x3 One-Handed</option>
+    <option value="clock">Clock</option>
+    <option value="minx">Megaminx</option>
+    <option value="pyram">Pyraminx</option>
+    <option value="skewb">Skewb</option>
+    <option value="sq1">Square-1</option>
+    <option value="444bf">4x4x4 Blindfolded</option>
+    <option value="555bf">5x5x5 Blindfolded</option>
+    <option value="333mbf">3x3x3 Multi-Blind</option>
+    <option value="fto">Face-Turning Octahedron</option>
+    <option value="master_tetraminx">Master Tetraminx</option>
+    <option value="kilominx">Kilominx</option>
+    <option value="redi_cube">Redi Cube</option>
+</select>
+<button onclick="window.upd()">Scramble</button>
+<button onclick="window.togglePop()">See Visual</button>
 
 <br><br>
 
 <!-- <button onclick="font()">ignore this button it isnt used yet blah blah</button> -->
 <script type="text/javascript">
-    const threebythree = ["U", "F", "L", "B", "R", "D"];
-const twobytwo = ["U", "R", "F"];
-const pyra = ["R", "U", "L", "B", "r", "u", "l", "b"];
-/*
- * Get moveset for NxN or pyra. Used internally
-*/
-function getMoves(size) {
-    if(size == 2) {
-        return twobytwo;
-    } else if(size == 'pyra' || size == 'skewb') {
-        return pyra;
-    } else {
-        return threebythree;
-    }
+    var playerMap = {
+    "333": "3x3x3",
+    "222": "2x2x2",
+    "444": "4x4x4",
+    "555": "5x5x5",
+    "666": "6x6x6",
+    "777": "7x7x7",
+    "clock": "clock",
+    "minx": "megaminx",
+    "pyram": "pyraminx",
+    "skewb": "skewb",
+    "sq1": "square1",
+    "fto": "fto",
+    "master_tetraminx": "master_tetraminx",
+    "kilominx": "kilominx",
+    "redi_cube": "redi_cube"
 }
-/*
- * Generate a scramble array of strings (moves). Supports NxN and 'pyra'.
-*/
-function genScramble(amount, size) {
-    var pyraTips = [];
-    let shkr = [];
-    var lastMove = "";
-    for (var x = 0; x < amount; x++) {
-        function genMove() {
-            var move = getMoves(size)[Math.floor(getMoves(size).length * Math.random())];
-            if(move == lastMove) return genMove();
-            if(size == "skewb") move = move.toUpperCase();
-            if(size == "pyra") {
-                if (move == move.toLowerCase()) {
-                    if (pyraTips.length > 3) return genMove();
-                    var genPyraTip = () => {
-                        var tp = ['\'', ''];
-                        if(move == pyraTips[pyraTips.length - 1]) return genPyraTip();
-                        var mv = (move + tp[Math.floor(Math.random() * tp.length)]);
-                        return mv;
-                    }
-                    pyraTips.push(genPyraTip());
-                    return genMove();
-                }
-            }
-            lastMove = move;
-            var possibles = ["'", ""];
-            if(!["skewb", "pyra"].includes(size)) {
-                possibles.push("2");
-            }
-            var add = possibles[Math.floor(possibles.length * Math.random())];
-            return (`${move}${add}`);
-        }
-        shkr.push(genMove());
-    }
-    if(size == "pyra") {
-        shkr = shkr.concat(pyraTips);
-    }
-    return shkr;
-}
-function scramble(amount, size) {
-    return genScramble(amount, size).join(" ");
-}
-function upd(size) {
-    var x = (!isNaN(size) ? scramble(size < 3 ? 10 : 20, size) : scramble(12, size));
-    document.querySelector('h1').textContent = x;
-}
+window.updPlayer = (v)=>{
+    document.querySelector('twisty-player').puzzle = playerMap[document.querySelector('#puzzleSel').value] || '3x3x3';
+    document.querySelector('twisty-player').alg = v;
+};
+window.togglePop = ()=>{
+    document.querySelector('.popup').classList.toggle('hidden');
+};
 </script>
     
 </body>
