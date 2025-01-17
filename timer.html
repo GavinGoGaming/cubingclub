@@ -4,44 +4,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer | Cubing Club</title>
-<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css">
+<title>Quadpad Export</title>
+
 <style>
-    /* CSS */
-html, body {
+    @import url(https://rsms.me/inter/inter.css);
+@import url(https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css);
+html,
+body {
     background: #111;
     color: white;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.charge, .charge > body {
+
+.charge,
+.charge>body {
     background: #440000;
 }
-.timing, .timing > body {
+
+.timing,
+.timing>body {
     background: #072e00;
 }
-.done, .done > body {
+
+.done,
+.done>body {
     background: #000b24;
 }
+
 .edit {
     color: lightblue;
     text-decoration: underline;
     cursor: pointer;
 }
+
 .times {
     display: inline-flex;
     flex-direction: column;
     border: 1px solid #ffffff0f;
     border-radius: 5px;
     padding: 4px;
-    width: auto;
+    width: calc(100% - 10px);
 }
+
 .row {
     border: 1px solid #ffffff0f;
     padding: 4px;
     display: flex;
+    justify-content: space-between;
     gap: 2px;
 }
+
 .row button {
     background: #222;
     border-radius: 3px;
@@ -50,51 +69,67 @@ html, body {
     transition: background 0.1s ease;
     font-family: Inter;
 }
+
 .row .clear i {
     color: rgb(255, 92, 92);
 }
+
 .row .add i {
     color: rgb(107, 255, 107);
 }
+
 .row .delete i {
     color: rgb(255, 126, 126);
 }
+
 .row .theme i {
     color: rgb(82, 200, 255);
 }
+
 .row button:disabled {
     border-color: #ffffff0a;
     filter: grayscale(0.9);
 }
+
 .row button:not(:disabled):hover {
     background: #333;
 }
+
+.row.keep button {
+    width: 100%;
+}
+
 .deleting {
     animation: deleting 0.5s ease forwards;
 }
+
 @keyframes deleting {
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         display: none;
     }
 }
+
 .times span b {
     padding-right: 5px;
 }
+
 .row:first-of-type {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
+
 .row:last-of-type {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
 
 .settings {
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
     width: calc(100% - 20px);
@@ -106,9 +141,12 @@ html, body {
     display: flex;
     padding: 5px;
 }
-.left, .right {
+
+.left,
+.right {
     padding: 2px;
 }
+
 .left {
     width: 25%;
     display: flex;
@@ -117,6 +155,7 @@ html, body {
     gap: 2px;
     border-right: 4px solid #ffffff1f;
 }
+
 .left .item {
     width: calc(100% - 5px);
     height: 25px;
@@ -127,22 +166,28 @@ html, body {
     border: 1px solid #ffffff0a;
     box-sizing: border-box;
     gap: 5px;
-    border-radius: 6px;;
+    border-radius: 6px;
+    ;
 }
+
 .left .item[disabled] {
     color: #aeaeae;
     border-color: #ffffff03;
 }
+
 .left .item:not([disabled]):hover {
     background: #373737;
 }
+
 .left .item.active {
     background: #464646;
 }
+
 .right {
     width: 100%;
     padding-left: 8px;
 }
+
 .close {
     top: -10px;
     right: -10px;
@@ -153,23 +198,28 @@ html, body {
     border: 1px solid rgba(240, 128, 128, 0.573);
     color: rgb(240, 128, 128);
     border-radius: 50%;
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
-.close > i {
+
+.close>i {
     transition: scale 0.1s ease;
 }
+
 .close:hover {
     background: #522;
 }
-.close:hover > i {
+
+.close:hover>i {
     scale: 1.2;
     transform: translateX(0.5px);
 }
-.settings:not(.active) { 
+
+.settings:not(.active) {
     display: none;
 }
+
 .settings-section {
     display: flex;
     flex-direction: column;
@@ -177,23 +227,79 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
 .settings-section:not(.current) {
     display: none;
+}
+#title {
+    margin: 0;
+    font-size: 20px;
+}
+a:link {
+    color: rgb(132, 136, 255);
+    text-decoration: none;
+}
+a:link:visited {
+    color: rgb(108, 113, 255);
+}
+a:link:hover {
+    color: rgb(80, 86, 255);
+}
+
+:focus {
+    outline: 2px solid #ffffff30;
+    border-radius: 4px;
+}
+
+.split {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    display: flex;
+}
+.left-p {
+    height: 100%;
+    width: 100%;
+}
+.right-p {
+    width: 200px;
+    height: 100%;
+    overflow-y: auto;
+    border-left: 2px solid #222222cc;
+    padding-left: 10px;
+}
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-direction: row; 
+}
+input {
+    background: #333;
+    color: white;
+    border-radius: 4px;
+    border: 1px solid #ffffff30;
+    font-family: monospace;
 }
 </style>
 </head>
 <body>
-<h1>Cube Timer</h1>
-<span>Hold <i class="edit">Space</i> - Release to start - Press to end</span>
-<br>
-<i class="a"></i>
-<h2></h2>
-<div class="times">
-    <span><b>Avg:</b><span id="avg"></span></span>
-    <div class="row keep">
-        <button class="add"><i class="fa-solid fa-message-plus"></i></button>
-        <button class="clear"><i class="fa-solid fa-trash-xmark"></i></button>
-        <button class="theme toggle-settings"><i class="fa-solid fa-gear"></i></button>
+<div class="split">
+    <div class="left-p">
+        <h1 id="title">SPMSCC [<a href="/scramble">Scrambler</a> | <a href="/timer">Timer</a>]</h1>
+        <span>Hold <i class="edit">Space</i> - Release to start - Press to end</span>
+        <br>
+        <i class="a"></i>
+        <h2></h2>
+    </div>
+    <div class="right-p">
+        <div class="times">
+            <span><b>Avg:</b><span id="avg"></span></span>
+            <div class="row keep">
+                <button class="add"><i class="fa-solid fa-message-plus"></i></button>
+                <button class="clear"><i class="fa-solid fa-trash-xmark"></i></button>
+                <button class="theme toggle-settings"><i class="fa-solid fa-gear"></i></button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -201,16 +307,20 @@ html, body {
     <div class="close toggle-settings"><i class="fa-solid fa-xmark"></i></div>
     <div class="left">
         <b>Settings</b>
-        <div class="item active" data-section="theme"><i class="fa-solid fa-palette"></i>Theme</div>
+        <div class="item active" data-section="data"><i class="fa-solid fa-books"></i>Data</div>
+        <div class="item" data-section="theme"><i class="fa-solid fa-palette"></i>Theme</div>
         <div class="item" disabled><i class="fa-solid fa-gear"></i>Settings</div>
-        <div class="item" data-section="data"><i class="fa-solid fa-books"></i>Data</div>
     </div>
     <div class="right">
-        <div class="settings-section current" id="theme">
+        <div class="settings-section" id="theme">
             <b>Theme Settings</b>
         </div>
-        <div class="settings-section" id="data">
+        <div class="settings-section current" id="data">
             <b>Data Settings</b>
+            <div class="setting-row">
+                <span>Profile:</span>
+                <input type="text" id="profile" value="default"></input>
+            </div>
         </div>
     </div>
 </div>
@@ -225,21 +335,26 @@ var listeningforkey = false;
 var jwlfk = false;
 var timeStart;
 var finalToDisplay = "0";
+var sel_profile = window.localStorage.getItem('spms_cc_profile') || "default";
+if (!window.localStorage.getItem('spms_cc_profile')) {
+    sel_profile = "default";
+    window.localStorage.setItem('spms_cc_profile', 'default');
+}
 const times = document.querySelector('.times');
 
 const settings = document.querySelector('.settings');
 const toggles = document.querySelectorAll('.toggle-settings');
-toggles.forEach(x=>{
-    x.addEventListener('click',()=>{
+toggles.forEach(x => {
+    x.addEventListener('click', () => {
         settings.classList.toggle('active');
     })
 })
 const items = [...document.querySelectorAll('.item')].filter(x => (x.getAttribute('disabled') == null));
-items.forEach(menuItem =>{
-    menuItem.addEventListener('click', ()=>{
+items.forEach(menuItem => {
+    menuItem.addEventListener('click', () => {
         document.querySelectorAll('.settings-section').forEach(x => { x.classList.remove('current') });
         document.querySelector('.settings-section#' + menuItem.dataset.section).classList.add('current');
-        document.querySelectorAll('.item').forEach(x=>{x.classList.remove('active')});
+        document.querySelectorAll('.item').forEach(x => { x.classList.remove('active') });
         menuItem.classList.add('active');
     });
 });
@@ -248,33 +363,35 @@ function addTimeItem(time) {
     if (!time) time = '0'; // 0s
     const row = document.createElement('div');
     row.className = 'row';
-    
+
     const timeDisplay = document.createElement('span');
     timeDisplay.textContent = time + 's';
-    
+
     const deleteButton = document.createElement('button');
     const icon = document.createElement('i');
-    icon.className="fa-solid fa-trash";
-    deleteButton.className='delete';
+    icon.className = "fa-solid fa-trash";
+    deleteButton.className = 'delete';
     deleteButton.appendChild(icon);
     deleteButton.onclick = () => {
         row.classList.add('deleting');
         deleteButton.remove();
-        setTimeout(()=>{
+        setTimeout(() => {
             row.remove();
-        },600);
+        }, 600);
         removeTime(time);
     };
-    
+
     row.appendChild(timeDisplay);
     row.appendChild(deleteButton);
     times.appendChild(row);
 }
 const clear = document.querySelector('.clear');
 const add = document.querySelector('.add');
-clear.addEventListener('click',()=>{
-    if(confirm("Clear all times?")) {
-        window.localStorage.setItem('cubetime', []);
+clear.addEventListener('click', () => {
+    if (confirm("Clear all times?")) {
+        window.localStorage.setItem('cubetime_'+sel_profile, []);
+        document.querySelectorAll('.row:not(.keep)').forEach(r=>r.remove());
+        document.querySelector('#avg').textContent = "None";
     }
 });
 add.addEventListener('click', () => {
@@ -283,49 +400,50 @@ add.addEventListener('click', () => {
         parseFloat(time);
         addTimeToLS(time);
         addTimeItem(time);
-    } catch(ex) {
+    } catch (ex) {
         alert("Not a time.");
     }
 });
 function updateAverage(times) {
-    if(times.length < 1) {
+    if (times.length < 1) {
         document.querySelector('#avg').innerText = 'None'
     }
-    let timesAsNumbers = times.map(time=>parseFloat(time));
+    let timesAsNumbers = times.map(time => parseFloat(time));
     const average = timesAsNumbers.reduce((a, b) => a + b) / timesAsNumbers.length;
     document.querySelector('#avg').innerText = average.toFixed(3);
 }
 function removeTime(valueToRemove) {
-    if (!localStorage.getItem("cubetime")) {
-        localStorage.setItem('cubetime', []);
+    if (!localStorage.getItem("cubetime_"+sel_profile)) {
+        localStorage.setItem('cubetime_'+sel_profile, []);
     }
-    const storedArray = localStorage.getItem("cubetime");
+    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
     const updatedArray = array.filter(item => item !== valueToRemove);
-    localStorage.setItem('cubetime', JSON.stringify(updatedArray));
+    updateAverage(updatedArray);
+    localStorage.setItem('cubetime_'+sel_profile, JSON.stringify(updatedArray));
 }
 function addTimeToLS(valueToRemove) {
-    if (!localStorage.getItem("cubetime")) {
-        localStorage.setItem('cubetime', []);
+    if (!localStorage.getItem("cubetime_"+sel_profile)) {
+        localStorage.setItem('cubetime_'+sel_profile, []);
     }
-    const storedArray = localStorage.getItem("cubetime");
+    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
     array.push(valueToRemove);
-    localStorage.setItem('cubetime', JSON.stringify(array));
+    localStorage.setItem('cubetime_'+sel_profile, JSON.stringify(array));
 }
 function saveTime(time) {
-    if (!localStorage.getItem("cubetime")) {
-        localStorage.setItem('cubetime', []);
+    if (!localStorage.getItem("cubetime_"+sel_profile)) {
+        localStorage.setItem('cubetime_'+sel_profile, []);
     }
     addTimeToLS(time);
     addTimeItem(time);
-    updateAverage(JSON.parse(localStorage.getItem("cubetime")));
+    updateAverage(JSON.parse(localStorage.getItem("cubetime_"+sel_profile)));
 }
 function loadTimes() {
-    if (!localStorage.getItem("cubetime")) {
-        localStorage.setItem('cubetime', []);
+    if (!localStorage.getItem("cubetime_"+sel_profile)) {
+        localStorage.setItem('cubetime_'+sel_profile, []);
     }
-    const storedArray = localStorage.getItem("cubetime");
+    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
     array.forEach(time => {
         addTimeItem(time);
@@ -333,13 +451,13 @@ function loadTimes() {
     updateAverage(array);
 }
 
-key.addEventListener('click', ()=>{
+key.addEventListener('click', () => {
     listeningforkey = true;
     timing = false;
     over = false;
 })
 document.body.addEventListener('keydown', (e) => {
-    if(listeningforkey) {
+    if (listeningforkey) {
         selkey = e.key;
         key.innerText = e.code;
         listeningforkey = false;
@@ -348,11 +466,11 @@ document.body.addEventListener('keydown', (e) => {
         over = false;
         return;
     }
-    if(e.key == ' ') {
+    if (e.key == ' ') {
         e.preventDefault();
     }
     if (e.key == selkey) {
-        if(timing) {
+        if (timing) {
             if (over) return;
             over = true;
             document.documentElement.className = "done";
@@ -362,47 +480,55 @@ document.body.addEventListener('keydown', (e) => {
             finalToDisplay = time;
             message.innerText = "Final time: " + time;
             saveTime(threetime);
-        }else {
+        } else {
             message.innerText = "Charging... (Release to start)";
             document.documentElement.className = "charge";
         }
     }
 })
 document.body.addEventListener('keyup', (e) => {
-    if(listeningforkey || jwlfk) { return; }
+    if (listeningforkey || jwlfk) { return; }
     if (e.key == selkey) {
-        if(!timing) {
+        if (!timing) {
             message.innerText = "Started";
             timing = true;
             document.documentElement.className = "timing";
-            timeStart = Date.now(); 
-        }else {
+            timeStart = Date.now();
+        } else {
             timing = false;
             over = false;
         }
     }
 })
 
-setInterval(()=>{
-    if(jwlfk) {
+setInterval(() => {
+    if (jwlfk) {
         timing = false;
         over = false;
     }
     jwlfk = false;
-    if(timing) {
+    if (timing) {
         h3.innerText = ((Date.now() - timeStart) / 1000);
-    }else {
+    } else {
         h3.innerText = "Final Time: " + finalToDisplay;
     }
-},100);
+}, 100);
 
 document.addEventListener('DOMContentLoaded', loadTimes);
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
     var link = document.createElement('link');
-    link.href ="https://raw.githubusercontent.com/GavinGoGaming/cubingclub/refs/heads/main/club_logo.png";
-    link.rel="shortcut icon";
+    link.href = "https://raw.githubusercontent.com/GavinGoGaming/cubingclub/refs/heads/main/club_logo.png";
+    link.rel = "shortcut icon";
     document.head.appendChild(link);
+    document.querySelector('#profile').value = sel_profile;
 });
+var ptmo=null;
+document.querySelector('#profile').addEventListener('input', (e)=>{
+    sel_profile = e.target.value;
+    window.localStorage.setItem('spms_cc_profile', sel_profile);
+    if (ptmo) clearTimeout(ptmo);
+    ptmo = setTimeout(()=>{loadTimes()},800);
+})
 </script>
     
 </body>
