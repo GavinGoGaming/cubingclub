@@ -8,7 +8,9 @@
 
 <style>
     @import url(https://rsms.me/inter/inter.css);
+@import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap);
 @import url(https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css);
+
 html,
 body {
     background: #111;
@@ -280,16 +282,108 @@ input {
     border: 1px solid #ffffff30;
     font-family: monospace;
 }
+
+.scramble {
+    width: calc(100% - 10px);
+    border-radius: 6px;
+    overflow-x: auto;
+    height: 40px;
+    background: #3333;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    justify-content: center;
+}
+
+#reload-scramble {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    padding-top: 2px;
+    padding-left: 1px;
+    margin: 0;
+    border: 1px solid #ffffff63;
+    background: #444;
+    color: rgb(103, 255, 227);
+    border-radius: 6px;
+}
+#reload-scramble:hover {
+    background: #555;
+}
+#current-scramble {
+    width: calc(100% - 124px);
+    font-size: 14px;
+    text-overflow: clip;
+    white-space: nowrap;
+    text-align: center;
+    font-family: JetBrains Mono;
+    overflow-x: auto;
+}
+#current-puzzle {
+    width: 80px;
+    height: 25px;
+    border: 1px solid #ffffff63;
+    background: #444;
+    font-family: JetBrains Mono;
+    border-radius: 6px;
+    color: white;
+}
+.not-scrambled {
+    color: #888;
+}
+.current-time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+}
+
+h2 {
+    font-family: JetBrains Mono;
+}
 </style>
 </head>
 <body>
+<script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
 <div class="split">
     <div class="left-p">
-        <h1 id="title">SPMSCC [<a href="/scramble">Scrambler</a> | <a href="/timer">Timer</a>]</h1>
-        <span>Hold <i class="edit">Space</i> - Release to start - Press to end</span>
+        <div class="scramble">
+            <div id="current-scramble" class="not-scrambled">Press <i class="fa-solid fa-refresh"></i> to generate</div>
+            <button id="reload-scramble"><i class="fa-solid fa-refresh"></i></button>
+            <select id="current-puzzle">
+                <option value="333" selected>3x3x3</option>
+                <option value="222">2x2x2</option>
+                <option value="444">4x4x4</option>
+                <option value="555">5x5x5</option>
+                <option value="666">6x6x6</option>
+                <option value="777">7x7x7</option>
+                <option value="333bf">3x3x3 Blindfolded</option>
+                <option value="333fm">3x3x3 Fewest Moves</option>
+                <option value="333oh">3x3x3 One-Handed</option>
+                <option value="clock">Clock</option>
+                <option value="minx">Megaminx</option>
+                <option value="pyram">Pyraminx</option>
+                <option value="skewb">Skewb</option>
+                <option value="sq1">Square-1</option>
+                <option value="444bf">4x4x4 Blindfolded</option>
+                <option value="555bf">5x5x5 Blindfolded</option>
+                <option value="333mbf">3x3x3 Multi-Blind</option>
+                <option value="fto">Face-Turning Octahedron</option>
+                <option value="master_tetraminx">Master Tetraminx</option>
+                <option value="kilominx">Kilominx</option>
+                <option value="redi_cube">Redi Cube</option>
+            </select>
+        </div>
+        <h1 id="title">SPMSCC Timer</h1>
+        <i class="a">Hold spacebar</i>
         <br>
-        <i class="a"></i>
-        <h2></h2>
+        <div class="current-time">
+            <h2></h2>
+        </div>
     </div>
     <div class="right-p">
         <div class="times">
@@ -319,11 +413,20 @@ input {
             <b>Data Settings</b>
             <div class="setting-row">
                 <span>Profile:</span>
-                <input type="text" id="profile" value="default"></input>
+                <input type="text" id="profile" spellcheck="false" value="default"></input>
+            </div>
+            <div class="setting-row">
+                <span>Keybind [temporary]:</span>
+                <i class="edit">Space</i>
             </div>
         </div>
     </div>
 </div>
+
+<script type="module">
+    import { randomScrambleForEvent } from "//cdn.cubing.net/v0/js/cubing/scramble";
+    window.rsfs = randomScrambleForEvent;
+</script>
 <script type="text/javascript">
     const message = document.querySelector('.a');
 const h3 = document.querySelector('h2');
@@ -456,6 +559,11 @@ key.addEventListener('click', () => {
     timing = false;
     over = false;
 })
+
+function setState(state) {
+    document.documentElement.className = state;
+}
+
 document.body.addEventListener('keydown', (e) => {
     if (listeningforkey) {
         selkey = e.key;
@@ -473,7 +581,7 @@ document.body.addEventListener('keydown', (e) => {
         if (timing) {
             if (over) return;
             over = true;
-            document.documentElement.className = "done";
+            setState("done");
             var curTime = Date.now();
             var threetime = `${(curTime - timeStart) / 1000}`;
             var time = `${threetime}` + "s";
@@ -482,7 +590,7 @@ document.body.addEventListener('keydown', (e) => {
             saveTime(threetime);
         } else {
             message.innerText = "Charging... (Release to start)";
-            document.documentElement.className = "charge";
+            setState("charge");
         }
     }
 })
@@ -492,7 +600,7 @@ document.body.addEventListener('keyup', (e) => {
         if (!timing) {
             message.innerText = "Started";
             timing = true;
-            document.documentElement.className = "timing";
+            setState("timing");
             timeStart = Date.now();
         } else {
             timing = false;
@@ -507,10 +615,10 @@ setInterval(() => {
         over = false;
     }
     jwlfk = false;
-    if (timing) {
+    if (timing && !over) {
         h3.innerText = ((Date.now() - timeStart) / 1000);
     } else {
-        h3.innerText = "Final Time: " + finalToDisplay;
+        h3.innerText = "" + finalToDisplay;
     }
 }, 100);
 
@@ -528,6 +636,15 @@ document.querySelector('#profile').addEventListener('input', (e)=>{
     window.localStorage.setItem('spms_cc_profile', sel_profile);
     if (ptmo) clearTimeout(ptmo);
     ptmo = setTimeout(()=>{loadTimes()},800);
+})
+document.querySelector('#reload-scramble').addEventListener('click', (e)=>{
+    var puzzle = document.querySelector('#current-puzzle').value;
+    var visual = document.querySelector('#current-scramble');
+    visual.textContent = "⏳ Loading..."
+    visual.classList.remove('not-scrambled');
+    window.rsfs(puzzle).then(s => {
+        visual.textContent = s;
+    });
 })
 </script>
     
