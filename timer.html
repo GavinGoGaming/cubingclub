@@ -10,45 +10,10 @@
     @import url(https://rsms.me/inter/inter.css);
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap);
 @import url(https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css);
-/* Midnight style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
 
-/* Forest style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Anonymous+Pro:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fantasque+Sans+Mono:wght@400;700&family=Fira+Code:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inconsolata:wght@400;600;700&family=Lato:wght@400;700;900&family=Lexend:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Mulish:wght@400;600;700;900&family=Nunito:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=PT+Mono&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Recursive:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&family=Rubik:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;700&family=Source+Sans+Pro:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Ubuntu+Mono:wght@400;700&family=Urbanist:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/victor-mono@4.5.0/index.min.css');
 
-/* Sunset style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
-
-/* Neon style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
-
-/* Desert style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap');
-
-/* Arctic style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
-
-/* Volcanic style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-
-/* Oceanic style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap');
-
-/* Aurora style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
-
-/* Twilight style fonts */
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 html,
 body {
     background: var(--regular-bg);
@@ -457,9 +422,43 @@ h2 {
     width: 35px;
     border-radius: 4px;
     border: 2px solid #ffffff2b;
+    font-family: Helvetica;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: var(--bg);
 }
+.square:after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: var(--bg);
+    filter: saturate(2);
+}
+.light-selector .square:after {
+    filter: saturate(6);
+}
+
 .theme-select {
     cursor: pointer;
+}
+.split-themes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+.themes, .themes-light {
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
 }
 </style>
 </head>
@@ -525,6 +524,10 @@ h2 {
     <div class="right">
         <div class="settings-section" id="theme">
             <b>Theme Settings</b>
+            <div class="split-themes">
+                <div class="themes"></div>
+                <div class="themes-light"></div>
+            </div>
         </div>
         <div class="settings-section current" id="data">
             <b>Data Settings</b>
@@ -962,6 +965,15 @@ const allStyles = {
         fontMono: 'Roboto Mono',
         color: '#2D2D3A'
     },
+    'light-neon-red': {
+        regularBackground: '#F5F5FA',
+        timeChargingBackground: '#FFDDDD',
+        timeTickingBackground: '#EBFFEB',
+        timeDoneBackground: '#EBEFFF',
+        fontRegular: 'Poppins',
+        fontMono: 'Roboto Mono',
+        color: '#2D2D3A'
+    },
     'light-desert': {
         regularBackground: '#F7F4F1',
         timeChargingBackground: '#FFEEE6',
@@ -1021,9 +1033,99 @@ const allStyles = {
         timeChargingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
         timeTickingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
         timeDoneBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
-        fontRegular: 'Comic Sans, Comic Sans MS, Comic,',
-        fontMono: 'Times',
-        color: '#2E333C'
+        fontRegular: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'Comic Relief', cursive, sans-serif",
+        fontMono: 'Wingdings',
+        color: '#fff'
+    },
+    'light-mint-breeze': {
+        regularBackground: '#E0F5E9',
+        timeChargingBackground: '#FFD6D6',
+        timeTickingBackground: '#C9E9D9',
+        timeDoneBackground: '#D6E8FF',
+        fontRegular: 'Quicksand',
+        fontMono: 'Fira Code',
+        color: '#2D5D46'
+    },
+    'light-peach-cream': {
+        regularBackground: '#FFEFD5',
+        timeChargingBackground: '#FFCCD8',
+        timeTickingBackground: '#D8F0C8',
+        timeDoneBackground: '#CFE2FF',
+        fontRegular: 'Manrope',
+        fontMono: 'JetBrains Mono',
+        color: '#5A3A22'
+    },
+    'light-lavender-mist': {
+        regularBackground: '#E6E6FA',
+        timeChargingBackground: '#FFD1D1',
+        timeTickingBackground: '#D8F0DB',
+        timeDoneBackground: '#C9E0FF',
+        fontRegular: 'Urbanist',
+        fontMono: 'JetBrains Mono',
+        color: '#4F4576'
+    },
+    'light-sky-azure': {
+        regularBackground: '#DEF2FF',
+        timeChargingBackground: '#FFC8DC',
+        timeTickingBackground: '#C9EDDF',
+        timeDoneBackground: '#C7D9FF',
+        fontRegular: 'Outfit',
+        fontMono: 'JetBrains Mono',
+        color: '#19486A'
+    },
+    'light-rose-gold': {
+        regularBackground: '#F7E2E2',
+        timeChargingBackground: '#FFB3B3',
+        timeTickingBackground: '#D2EADC',
+        timeDoneBackground: '#D9E5FF',
+        fontRegular: 'DM Sans',
+        fontMono: 'Victor Mono',
+        color: '#8C484F'
+    },
+    'light-vanilla-latte': {
+        regularBackground: '#F5EAD8',
+        timeChargingBackground: '#FFCCD1',
+        timeTickingBackground: '#CBEAD6',
+        timeDoneBackground: '#D1DDFF',
+        fontRegular: 'Lexend',
+        fontMono: 'Recursive',
+        color: '#5E4D37'
+    },
+    'light-sage-garden': {
+        regularBackground: '#E0EBDE',
+        timeChargingBackground: '#F8D4D4',
+        timeTickingBackground: '#C2E6D3',
+        timeDoneBackground: '#D4E0F9',
+        fontRegular: 'Plus Jakarta Sans',
+        fontMono: 'JetBrains Mono',
+        color: '#445644'
+    },
+    'light-powder-blue': {
+        regularBackground: '#D8E8EF',
+        timeChargingBackground: '#FFCCC6',
+        timeTickingBackground: '#D3EFDB',
+        timeDoneBackground: '#CFD9F2',
+        fontRegular: 'Albert Sans',
+        fontMono: 'Fira Code',
+        color: '#2D5269'
+    },
+    'light-butter-lemon': {
+        regularBackground: '#FFF4C2',
+        timeChargingBackground: '#FFD0D0',
+        timeTickingBackground: '#CBECCC',
+        timeDoneBackground: '#CFE1FF',
+        fontRegular: 'Atkinson Hyperlegible',
+        fontMono: 'JetBrains Mono',
+        color: '#776618'
+    },
+    'light-coral-reef': {
+        regularBackground: '#FFE3D7',
+        timeChargingBackground: '#FFB3C0',
+        timeTickingBackground: '#C5EFD3',
+        timeDoneBackground: '#CFDCFF',
+        fontRegular: 'Space Grotesk',
+        fontMono: 'JetBrains Mono',
+        color: '#994433'
     }
 };
 document.addEventListener('DOMContentLoaded', () => {
@@ -1037,16 +1139,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 Object.keys(allStyles).forEach(styleName => {
     let style = allStyles[styleName];
-    document.querySelector('#theme').insertAdjacentHTML('beforeend', `
+    var selector = "";
+    if(styleName.startsWith('light')) {
+        selector = `
+            <div class="theme-select light-selector" data-theme="${styleName}" style="background:#ccc;color:${style.color}">
+                <b style="font-family:'${style.fontRegular}';">${styleName} <span style="font-family:'${style.fontMono}';">style</span></b>
+                <div class="tiles">
+                    <div class="square" style="--bg:${style.regularBackground}"></div>
+                    <div class="square" style="--bg:${style.timeChargingBackground}"></div>
+                    <div class="square" style="--bg:${style.timeTickingBackground}"></div>
+                    <div class="square" style="--bg:${style.timeDoneBackground}"></div>
+                </div>
+            </div>
+`;
+    } else {
+        selector = `
             <div class="theme-select" data-theme="${styleName}" style="background:${style.regularBackground};color:${style.color}">
                 <b style="font-family:'${style.fontRegular}';">${styleName} <span style="font-family:'${style.fontMono}';">style</span></b>
                 <div class="tiles">
-                    <div class="square" style="background:${style.timeChargingBackground}"></div>
-                    <div class="square" style="background:${style.timeTickingBackground}"></div>
-                    <div class="square" style="background:${style.timeDoneBackground}"></div>
+                    <div class="square" style="--bg:${style.timeChargingBackground}"></div>
+                    <div class="square" style="--bg:${style.timeTickingBackground}"></div>
+                    <div class="square" style="--bg:${style.timeDoneBackground}"></div>
                 </div>
             </div>
-`);
+`;
+    }
+    document.querySelector('.themes'+(styleName.startsWith('light')?'-light':'')).insertAdjacentHTML('beforeend', selector);
     document.querySelector('.theme-select[data-theme="'+styleName+'"]').addEventListener('click', () => {
         setColors(style);
         window.localStorage.setItem('style', JSON.stringify(style));
