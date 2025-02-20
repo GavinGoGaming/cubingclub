@@ -10,11 +10,49 @@
     @import url(https://rsms.me/inter/inter.css);
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap);
 @import url(https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css);
+/* Midnight style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
 
+/* Forest style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* Sunset style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+/* Neon style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
+
+/* Desert style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap');
+
+/* Arctic style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
+
+/* Volcanic style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+/* Oceanic style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap');
+
+/* Aurora style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+
+/* Twilight style fonts */
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap');
 html,
 body {
-    background: #111;
-    color: white;
+    background: var(--regular-bg);
+    color: var(--font-color);
     height: 100vh;
     width: 100vw;
     padding: 0;
@@ -22,22 +60,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--font-regular), Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .charge,
 .charge>body {
-    background: #440000;
+    background: var(--time-charging-bg);
 }
 
 .timing,
 .timing>body {
-    background: #072e00;
+    background: var(--time-ticking-bg);
 }
 
 .done,
 .done>body {
-    background: #000b24;
+    background: var(--time-done-bg);
 }
 
 .edit {
@@ -64,10 +102,10 @@ body {
 }
 
 .row button {
-    background: #222;
+    background: #ffffff10;
     border-radius: 3px;
     border: 1px solid #ffffff2a;
-    color: white;
+    color: var(--font-color);
     transition: background 0.1s ease;
     font-family: Inter;
 }
@@ -94,7 +132,7 @@ body {
 }
 
 .row button:not(:disabled):hover {
-    background: #333;
+    background: #ffffff30;
 }
 
 .row.keep button {
@@ -225,9 +263,10 @@ body {
 .settings-section {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     width: 100%;
     height: 100%;
+    overflow: scroll;
 }
 
 .settings-section:not(.current) {
@@ -277,7 +316,7 @@ a:link:hover {
 }
 input {
     background: #333;
-    color: white;
+    color: var(--font-color);
     border-radius: 4px;
     border: 1px solid #ffffff30;
     font-family: monospace;
@@ -307,12 +346,12 @@ input {
     padding-left: 1px;
     margin: 0;
     border: 1px solid #ffffff63;
-    background: #444;
+    background: #ffffff30;
     color: rgb(103, 255, 227);
     border-radius: 6px;
 }
 #reload-scramble:hover {
-    background: #555;
+    background: #ffffff40;
 }
 #current-scramble {
     width: calc(100% - 150px);
@@ -320,17 +359,17 @@ input {
     text-overflow: clip;
     white-space: nowrap;
     text-align: center;
-    font-family: JetBrains Mono;
+    font-family: var(--font-mono), JetBrains Mono;
     overflow-x: auto;
 }
 #current-puzzle {
     width: 80px;
     height: 25px;
     border: 1px solid #ffffff63;
-    background: #444;
-    font-family: JetBrains Mono;
+    background: #ffffff30;
+    font-family: var(--font-mono), JetBrains Mono;
     border-radius: 6px;
-    color: white;
+    color: var(--font-color);
 }
 .not-scrambled {
     color: #888;
@@ -343,7 +382,7 @@ input {
 }
 
 h2 {
-    font-family: JetBrains Mono;
+    font-family: var(--font-mono), JetBrains Mono;
 }
 
 .inner-pop {
@@ -390,6 +429,37 @@ h2 {
     justify-content: center;
     flex-direction: column;
     display: flex;
+}
+#profile {
+    font-family: var(--font-mono);
+}
+.theme-select {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 220px;
+    height: 60px;
+    padding: 4px;
+    border: 2px solid #ffffff20;
+    border-radius: 6px;
+}
+.tiles {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 4px;
+    margin: 0 2px;
+}
+.square {
+    height: 35px;
+    width: 35px;
+    border-radius: 4px;
+    border: 2px solid #ffffff2b;
+}
+.theme-select {
+    cursor: pointer;
 }
 </style>
 </head>
@@ -727,6 +797,251 @@ document.querySelectorAll('.player-toggle').forEach(toggle => {
     toggle.addEventListener('click', (e) => {
         document.querySelector('.popup').classList.toggle('hidden');
     })
+})
+
+function setColors(prop) {
+    document.documentElement.style.setProperty('--regular-bg', prop.regularBackground);
+    document.documentElement.style.setProperty('--time-charging-bg', prop.timeChargingBackground);
+    document.documentElement.style.setProperty('--time-ticking-bg', prop.timeTickingBackground);
+    document.documentElement.style.setProperty('--time-done-bg', prop.timeDoneBackground);
+    document.documentElement.style.setProperty('--font-regular', prop.fontRegular);
+    document.documentElement.style.setProperty('--font-mono', prop.fontMono);
+    document.documentElement.style.setProperty('--font-color', prop.color);
+}
+const allStyles = {
+    'default': {
+        regularBackground: '#111',
+        timeChargingBackground: '#440000',
+        timeTickingBackground: '#072e00',
+        timeDoneBackground: '#000b24',
+        fontRegular: 'Inter',
+        fontMono: 'JetBrains Mono',
+        color: 'white'
+    },
+    'midnight': {
+        regularBackground: '#0D1117',
+        timeChargingBackground: '#370036',
+        timeTickingBackground: '#003A4F',
+        timeDoneBackground: '#1F2D3D',
+        fontRegular: 'Rubik',
+        fontMono: 'Fira Code',
+        color: 'white'
+    },
+    'forest': {
+        regularBackground: '#1E2A20',
+        timeChargingBackground: '#461700',
+        timeTickingBackground: '#0F3320',
+        timeDoneBackground: '#0F172A',
+        fontRegular: 'Source Sans Pro',
+        fontMono: 'IBM Plex Mono',
+        color: 'white'
+    },
+    'sunset': {
+        regularBackground: '#2A1E28',
+        timeChargingBackground: '#4A1500',
+        timeTickingBackground: '#1A3041',
+        timeDoneBackground: '#001529',
+        fontRegular: 'Nunito',
+        fontMono: 'Space Mono',
+        color: 'white'
+    },
+    'neon': {
+        regularBackground: '#0F0F18',
+        timeChargingBackground: '#5A004A',
+        timeTickingBackground: '#003700',
+        timeDoneBackground: '#001666',
+        fontRegular: 'Poppins',
+        fontMono: 'Roboto Mono',
+        color: 'white'
+    },
+    'neon red': {
+        regularBackground: '#0F0F18',
+        timeChargingBackground: '#5A0000',
+        timeTickingBackground: '#003700',
+        timeDoneBackground: '#001666',
+        fontRegular: 'Poppins',
+        fontMono: 'Roboto Mono',
+        color: 'white'
+    },
+    'desert': {
+        regularBackground: '#2A2420',
+        timeChargingBackground: '#5C1D00',
+        timeTickingBackground: '#2E3500',
+        timeDoneBackground: '#0D2144',
+        fontRegular: 'Work Sans',
+        fontMono: 'Inconsolata',
+        color: 'white'
+    },
+    'arctic': {
+        regularBackground: '#1A222C',
+        timeChargingBackground: '#3D0017',
+        timeTickingBackground: '#00292B',
+        timeDoneBackground: '#000A38',
+        fontRegular: 'Montserrat',
+        fontMono: 'Ubuntu Mono',
+        color: 'white'
+    },
+    'volcanic': {
+        regularBackground: '#1E1E20',
+        timeChargingBackground: '#6B0000',
+        timeTickingBackground: '#1F3300',
+        timeDoneBackground: '#002952',
+        fontRegular: 'Raleway',
+        fontMono: 'Fira Code',
+        color: 'white'
+    },
+    'oceanic': {
+        regularBackground: '#172A3A',
+        timeChargingBackground: '#4D0519',
+        timeTickingBackground: '#003D25',
+        timeDoneBackground: '#051836',
+        fontRegular: 'Open Sans',
+        fontMono: 'Anonymous Pro',
+        color: 'white'
+    },
+    'aurora': {
+        regularBackground: '#121621',
+        timeChargingBackground: '#3C0028',
+        timeTickingBackground: '#014027',
+        timeDoneBackground: '#001138',
+        fontRegular: 'Lato',
+        fontMono: 'PT Mono',
+        color: 'white'
+    },
+    'twilight': {
+        regularBackground: '#191D26',
+        timeChargingBackground: '#502032',
+        timeTickingBackground: '#0A3C2E',
+        timeDoneBackground: '#0A204C',
+        fontRegular: 'Mulish',
+        fontMono: 'Source Code Pro',
+        color: 'white'
+    },
+    'light-default': {
+        regularBackground: '#F8F9FA',
+        timeChargingBackground: '#FFE6E6',
+        timeTickingBackground: '#E6FFE6',
+        timeDoneBackground: '#E6F0FF',
+        fontRegular: 'Inter',
+        fontMono: 'JetBrains Mono',
+        color: '#222222'
+    },
+    'light-midnight': {
+        regularBackground: '#EEF2F7',
+        timeChargingBackground: '#F9E6FA',
+        timeTickingBackground: '#E6F5FF',
+        timeDoneBackground: '#EBF1F8',
+        fontRegular: 'Rubik',
+        fontMono: 'Fira Code',
+        color: '#2C3E50'
+    },
+    'light-forest': {
+        regularBackground: '#F0F5F1',
+        timeChargingBackground: '#FFEFE6',
+        timeTickingBackground: '#E7F5EE',
+        timeDoneBackground: '#EEF2FA',
+        fontRegular: 'Source Sans Pro',
+        fontMono: 'IBM Plex Mono',
+        color: '#2E4132'
+    },
+    'light-sunset': {
+        regularBackground: '#F8F0F6',
+        timeChargingBackground: '#FFF0E6',
+        timeTickingBackground: '#EBF5FC',
+        timeDoneBackground: '#F0F7FF',
+        fontRegular: 'Nunito',
+        fontMono: 'Space Mono',
+        color: '#3A2D39'
+    },
+    'light-neon': {
+        regularBackground: '#F5F5FA',
+        timeChargingBackground: '#FFEBFF',
+        timeTickingBackground: '#EBFFEB',
+        timeDoneBackground: '#EBEFFF',
+        fontRegular: 'Poppins',
+        fontMono: 'Roboto Mono',
+        color: '#2D2D3A'
+    },
+    'light-desert': {
+        regularBackground: '#F7F4F1',
+        timeChargingBackground: '#FFEEE6',
+        timeTickingBackground: '#F3F7E6',
+        timeDoneBackground: '#ECF2FA',
+        fontRegular: 'Work Sans',
+        fontMono: 'Inconsolata',
+        color: '#3D3631'
+    },
+    'light-arctic': {
+        regularBackground: '#F0F4F8',
+        timeChargingBackground: '#FFE6EC',
+        timeTickingBackground: '#E6F5F6',
+        timeDoneBackground: '#E6EEFA',
+        fontRegular: 'Montserrat',
+        fontMono: 'Ubuntu Mono',
+        color: '#2C3741'
+    },
+    'light-volcanic': {
+        regularBackground: '#F4F4F5',
+        timeChargingBackground: '#FFEBEB',
+        timeTickingBackground: '#F0FFEB',
+        timeDoneBackground: '#EBF2FF',
+        fontRegular: 'Raleway',
+        fontMono: 'Fira Code',
+        color: '#333335'
+    },
+    'light-oceanic': {
+        regularBackground: '#EDF4F8',
+        timeChargingBackground: '#FFE9EF',
+        timeTickingBackground: '#E8F8F2',
+        timeDoneBackground: '#EAEEFB',
+        fontRegular: 'Open Sans',
+        fontMono: 'Anonymous Pro',
+        color: '#2F4858'
+    },
+    'light-aurora': {
+        regularBackground: '#F0F2F8',
+        timeChargingBackground: '#FCE6F4',
+        timeTickingBackground: '#E6FAF2',
+        timeDoneBackground: '#E6EEFA',
+        fontRegular: 'Lato',
+        fontMono: 'PT Mono',
+        color: '#2A2E39'
+    },
+    'light-twilight': {
+        regularBackground: '#F4F5F8',
+        timeChargingBackground: '#FAEEF2',
+        timeTickingBackground: '#ECF6F4',
+        timeDoneBackground: '#ECF0FA',
+        fontRegular: 'Mulish',
+        fontMono: 'Source Code Pro',
+        color: '#2E333C'
+    }
+};
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.localStorage.getItem('style') && JSON.parse(window.localStorage.getItem('style')).regularBackground) {
+        setColors(JSON.parse(window.localStorage.getItem('style')));
+    } else {
+        window.localStorage.setItem('style', JSON.stringify(allStyles['default']));
+        setColors(allStyles['default']);
+    }
+});
+
+Object.keys(allStyles).forEach(styleName => {
+    let style = allStyles[styleName];
+    document.querySelector('#theme').insertAdjacentHTML('beforeend', `
+            <div class="theme-select" data-theme="${styleName}" style="background:${style.regularBackground};color:${style.color}">
+                <b style="font-family:'${style.fontRegular}';">${styleName} <span style="font-family:'${style.fontMono}';">style</span></b>
+                <div class="tiles">
+                    <div class="square" style="background:${style.timeChargingBackground}"></div>
+                    <div class="square" style="background:${style.timeTickingBackground}"></div>
+                    <div class="square" style="background:${style.timeDoneBackground}"></div>
+                </div>
+            </div>
+`);
+    document.querySelector('.theme-select[data-theme="'+styleName+'"]').addEventListener('click', () => {
+        setColors(style);
+        window.localStorage.setItem('style', JSON.stringify(style));
+    });
 })
 </script>
     
