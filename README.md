@@ -8,7 +8,7 @@ Content: Front page
 ### Timer
 Located: timer.html
 
-Content: timer webapp, cstimer.net ripoff
+Content: timer webapp - styles, timings, averages, styles, etc
 ### Scrambler API (v1, deprecated)
 Located: scrambled_browser.js
 
@@ -23,7 +23,7 @@ function update(size) {
 }
 ```
 
-### Scrambler
+### Scrambler (v2, deprecated/gone to time)
 Located: scramble.html
-
-Content: UI for scrambler V2. Now uses cubing.js and twizzle for scrambles, supporting many options.
+Content: ~~UI for scrambler V2. Now uses cubing.js and twizzle for scrambles, supporting many options.~~
+Lost to time, accidentally exported a old build of the timer as scrambler.html. Scrambling is now integrated into Timer.
