@@ -14,6 +14,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Anonymous+Pro:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fantasque+Sans+Mono:wght@400;700&family=Fira+Code:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inconsolata:wght@400;600;700&family=Lato:wght@400;700;900&family=Lexend:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Mulish:wght@400;600;700;900&family=Nunito:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=PT+Mono&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Recursive:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&family=Rubik:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;700&family=Source+Sans+Pro:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Ubuntu+Mono:wght@400;700&family=Urbanist:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/victor-mono@4.5.0/index.min.css');
 
+@font-face {
+    font-family: "VCROSDM";
+    src: url("https://raw.githack.com/GavinGoGaming/cubingclub/main/VCR_OSD_MONO_1.001.ttf");
+}
 html,
 body {
     background: var(--regular-bg);
@@ -519,6 +523,7 @@ h2 {
         <b>Settings</b>
         <div class="item active" data-section="data"><i class="fa-solid fa-books"></i>Data</div>
         <div class="item" data-section="theme"><i class="fa-solid fa-palette"></i>Theme</div>
+        <div class="item" data-section="theme-maker"><i class="fa-solid fa-paintbrush"></i>Canvas</div>
         <div class="item" disabled><i class="fa-solid fa-gear"></i>Settings</div>
     </div>
     <div class="right">
@@ -528,6 +533,30 @@ h2 {
                 <div class="themes"></div>
                 <div class="themes-light"></div>
             </div>
+        </div>
+        <div class="settings-section" id="theme-maker">
+            <b>Custom Theme Maker</b>
+            <select id="background-reg">
+                <option value="#000" disabled selected>Background (Regular)</option>
+            </select>
+            <select id="background-charge">
+                <option value="#100" disabled selected>Background (Charge)</option>
+            </select>
+            <select id="background-ticking">
+                <option value="#010" disabled selected>Background (Ticking)</option>
+            </select>
+            <select id="background-done">
+                <option value="#001" disabled selected>Background (Done)</option>
+            </select>
+            <select id="font-reg">
+                <option value="Inter" disabled selected>Font (Regular)</option>
+            </select>
+            <select id="font-mono">
+                <option value="JetBrains Mono" disabled selected>Font (Mono)</option>
+            </select>
+            <select id="font-color">
+                <option value="#fff" disabled selected>Font (Color)</option>
+            </select>
         </div>
         <div class="settings-section current" id="data">
             <b>Data Settings</b>
@@ -821,15 +850,14 @@ const allStyles = {
         fontRegular: 'Inter',
         fontMono: 'JetBrains Mono',
         color: 'white'
-    },
-    'midnight': {
+    }, 'midnight': {
         regularBackground: '#0D1117',
         timeChargingBackground: '#370036',
         timeTickingBackground: '#003A4F',
         timeDoneBackground: '#1F2D3D',
         fontRegular: 'Rubik',
         fontMono: 'Fira Code',
-        color: 'white'
+        color: '#E6EDF3'  // Light blue-gray
     },
     'forest': {
         regularBackground: '#1E2A20',
@@ -838,7 +866,7 @@ const allStyles = {
         timeDoneBackground: '#0F172A',
         fontRegular: 'Source Sans Pro',
         fontMono: 'IBM Plex Mono',
-        color: 'white'
+        color: '#D8E9D5'  // Soft mint green
     },
     'sunset': {
         regularBackground: '#2A1E28',
@@ -847,7 +875,7 @@ const allStyles = {
         timeDoneBackground: '#001529',
         fontRegular: 'Nunito',
         fontMono: 'Space Mono',
-        color: 'white'
+        color: '#FFD0B5'  // Peachy orange
     },
     'neon': {
         regularBackground: '#0F0F18',
@@ -856,7 +884,7 @@ const allStyles = {
         timeDoneBackground: '#001666',
         fontRegular: 'Poppins',
         fontMono: 'Roboto Mono',
-        color: 'white'
+        color: '#00FF99'  // Bright neon green
     },
     'neon red': {
         regularBackground: '#0F0F18',
@@ -865,7 +893,7 @@ const allStyles = {
         timeDoneBackground: '#001666',
         fontRegular: 'Poppins',
         fontMono: 'Roboto Mono',
-        color: 'white'
+        color: '#FF3366'  // Neon pink-red
     },
     'desert': {
         regularBackground: '#2A2420',
@@ -874,7 +902,7 @@ const allStyles = {
         timeDoneBackground: '#0D2144',
         fontRegular: 'Work Sans',
         fontMono: 'Inconsolata',
-        color: 'white'
+        color: '#F5DEB3'  // Wheat/sand color
     },
     'arctic': {
         regularBackground: '#1A222C',
@@ -883,7 +911,7 @@ const allStyles = {
         timeDoneBackground: '#000A38',
         fontRegular: 'Montserrat',
         fontMono: 'Ubuntu Mono',
-        color: 'white'
+        color: '#D1E8FF'  // Ice blue
     },
     'volcanic': {
         regularBackground: '#1E1E20',
@@ -892,7 +920,7 @@ const allStyles = {
         timeDoneBackground: '#002952',
         fontRegular: 'Raleway',
         fontMono: 'Fira Code',
-        color: 'white'
+        color: '#FF7F50'  // Lava orange
     },
     'oceanic': {
         regularBackground: '#172A3A',
@@ -901,7 +929,7 @@ const allStyles = {
         timeDoneBackground: '#051836',
         fontRegular: 'Open Sans',
         fontMono: 'Anonymous Pro',
-        color: 'white'
+        color: '#8EEBEC'  // Sea foam
     },
     'aurora': {
         regularBackground: '#121621',
@@ -910,7 +938,7 @@ const allStyles = {
         timeDoneBackground: '#001138',
         fontRegular: 'Lato',
         fontMono: 'PT Mono',
-        color: 'white'
+        color: '#B6FFEA'  // Aurora green
     },
     'twilight': {
         regularBackground: '#191D26',
@@ -919,7 +947,7 @@ const allStyles = {
         timeDoneBackground: '#0A204C',
         fontRegular: 'Mulish',
         fontMono: 'Source Code Pro',
-        color: 'white'
+        color: '#CCADFF'  // Lavender purple
     },
     'light-default': {
         regularBackground: '#F8F9FA',
@@ -1136,6 +1164,150 @@ const allStyles = {
         fontRegular: 'Space Grotesk',
         fontMono: 'JetBrains Mono',
         color: '#994433'
+    },
+    'nebula': {
+        regularBackground: '#171322',
+        timeChargingBackground: '#5D0063',
+        timeTickingBackground: '#00385A',
+        timeDoneBackground: '#1A1A37',
+        fontRegular: 'Roboto',
+        fontMono: 'JetBrains Mono',
+        color: '#AD8CFF'  // Soft purple glow
+    },
+    'luna': {
+        regularBackground: '#221C35',
+        timeChargingBackground: '#4A174E',
+        timeTickingBackground: '#0D3E56',
+        timeDoneBackground: '#152240',
+        fontRegular: 'Inter',
+        fontMono: 'Fira Code',
+        color: '#C8D3F5'  // Soft moonlight blue
+    },
+    'grape': {
+        regularBackground: '#2D1B40',
+        timeChargingBackground: '#5F0060',
+        timeTickingBackground: '#003A4A',
+        timeDoneBackground: '#241B36',
+        fontRegular: 'Poppins',
+        fontMono: 'Space Mono',
+        color: '#E3B2FF'  // Light grape purple
+    },
+    'drowning': {
+        regularBackground: '#191E2A',
+        timeChargingBackground: '#0E445A',
+        timeTickingBackground: '#005F7A',
+        timeDoneBackground: '#0E2C4B',
+        fontRegular: 'Montserrat',
+        fontMono: 'IBM Plex Mono',
+        color: '#81C8E5'  // Underwater blue
+    },
+    'vscode': {
+        regularBackground: '#1E1E1E',
+        timeChargingBackground: '#4B1863',
+        timeTickingBackground: '#00522C',
+        timeDoneBackground: '#0E3A5E',
+        fontRegular: 'Roboto',
+        fontMono: 'monospace',
+        color: '#D4D4D4'  // VS Code default text color
+    },
+    'metropolis': {
+        regularBackground: '#1B1C23',
+        timeChargingBackground: '#5E002B',
+        timeTickingBackground: '#003350',
+        timeDoneBackground: '#1C2333',
+        fontRegular: 'Work Sans',
+        fontMono: 'IBM Plex Mono',
+        color: '#E5E9F0'  // Urban steel gray
+    },
+    'dark note': {
+        regularBackground: '#1F1F1F',
+        timeChargingBackground: '#4A1E44',
+        timeTickingBackground: '#004142',
+        timeDoneBackground: '#1A2131',
+        fontRegular: 'Source Sans Pro',
+        fontMono: 'Source Code Pro',
+        color: '#E0E0E0'  // Notepad text gray
+    },
+    '80s after dark': {
+        regularBackground: '#241B2F',
+        timeChargingBackground: '#7A0058',
+        timeTickingBackground: '#1B5585',
+        timeDoneBackground: '#281747',
+        fontRegular: 'VCROSDM',
+        fontMono: 'JetBrains Mono',
+        color: '#FF61D8'  // Neon pink
+    },
+    'future funk': {
+        regularBackground: '#2D1832',
+        timeChargingBackground: '#8A1373',
+        timeTickingBackground: '#006980',
+        timeDoneBackground: '#382151',
+        fontRegular: 'Chakra Petch',
+        fontMono: 'DM Mono',
+        color: '#F5C2E7'  // Funky pink
+    },
+    'superuser': {
+        regularBackground: '#262A33',
+        timeChargingBackground: '#4D1325',
+        timeTickingBackground: '#024233',
+        timeDoneBackground: '#1A2638',
+        fontRegular: 'Ubuntu',
+        fontMono: 'Hack',
+        color: '#98C379'  // Terminal green
+    },
+    'discord': {
+        regularBackground: '#36393F',
+        timeChargingBackground: '#5D3FD3',
+        timeTickingBackground: '#2F4858',
+        timeDoneBackground: '#202225',
+        fontRegular: 'Inter',
+        fontMono: 'Fira Code',
+        color: '#DCDDDE'  // Discord text color
+    },
+    'cyberspace': {
+        regularBackground: '#181C21',
+        timeChargingBackground: '#450CA2',
+        timeTickingBackground: '#005270',
+        timeDoneBackground: '#101823',
+        fontRegular: 'Roboto',
+        fontMono: 'JetBrains Mono',
+        color: '#00F0FF'  // Cyan neon
+    },
+    'hammerhead': {
+        regularBackground: '#1A2125',
+        timeChargingBackground: '#475B70',
+        timeTickingBackground: '#004D5A',
+        timeDoneBackground: '#131D23',
+        fontRegular: 'Inter',
+        fontMono: 'JetBrains Mono',
+        color: '#8AAFD5'  // Deep sea blue
+    },
+    'terra': {
+        regularBackground: '#1D2021',
+        timeChargingBackground: '#45403D',
+        timeTickingBackground: '#3A5743',
+        timeDoneBackground: '#282828',
+        fontRegular: 'Rubik',
+        fontMono: 'Fira Code',
+        color: '#D4BE98'  // Earthy tan
+    },
+    'aether': {
+        regularBackground: '#101015',
+        timeChargingBackground: '#34234C',
+        timeTickingBackground: '#00384F',
+        timeDoneBackground: '#18181C',
+        fontRegular: 'Roboto',
+        fontMono: 'Fira Code',
+        color: '#C5D2D9'  // Ethereal light blue
+    },
+    'onedark': {
+        regularBackground: '#282C34',
+        timeChargingBackground: '#513966',
+        timeTickingBackground: '#2B4F60',
+        timeDoneBackground: '#21252B',
+        fontRegular: 'Inter',
+        fontMono: 'JetBrains Mono',
+        color: '#ABB2BF'  // Atom One Dark text color
     }
 };
 document.addEventListener('DOMContentLoaded', () => {
@@ -1146,6 +1318,31 @@ document.addEventListener('DOMContentLoaded', () => {
         setColors(allStyles['default']);
     }
 });
+function extractValids() {
+    const monoFonts = new Set();
+    const regularFonts = new Set();
+    const backgroundColors = new Set();
+    const fontColors = new Set();
+
+    for (const styleName in allStyles) {
+        const style = allStyles[styleName];
+
+        if (style.fontMono) monoFonts.add(style.fontMono);
+        if (style.fontRegular) regularFonts.add(style.fontRegular);
+        if (style.color) fontColors.add(style.color);
+
+        if (style.regularBackground) backgroundColors.add(style.regularBackground);
+        if (style.timeChargingBackground) backgroundColors.add(style.timeChargingBackground);
+        if (style.timeTickingBackground) backgroundColors.add(style.timeTickingBackground);
+        if (style.timeDoneBackground) backgroundColors.add(style.timeDoneBackground);
+    }
+    return {
+        monoFonts: [...monoFonts].sort(),
+        regularFonts: [...regularFonts].sort(),
+        backgroundColors: [...backgroundColors].sort(),
+        fontColors: [...fontColors].sort()
+    };
+}
 
 Object.keys(allStyles).forEach(styleName => {
     let style = allStyles[styleName];
@@ -1180,6 +1377,9 @@ Object.keys(allStyles).forEach(styleName => {
         window.localStorage.setItem('style', JSON.stringify(style));
     });
 })
+
+const valids = extractValids(allStyles);
+
 </script>
     
 </body>
