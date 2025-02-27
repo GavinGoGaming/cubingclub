@@ -18,6 +18,10 @@
     font-family: "VCROSDM";
     src: url("https://raw.githack.com/GavinGoGaming/cubingclub/main/VCR_OSD_MONO_1.001.ttf");
 }
+@font-face {
+    font-family: "Andy";
+    src: url("https://raw.githack.com/GavinGoGaming/cubingclub/main/ANDYB.TTF");
+}
 html,
 body {
     background: var(--regular-bg);
@@ -25,6 +29,8 @@ body {
     height: 100vh;
     width: 100vw;
     padding: 0;
+    background-position: 50% 50% !important;
+    background-size: cover !important;
     margin: 0;
     display: flex;
     align-items: center;
@@ -427,13 +433,15 @@ h2 {
     border-radius: 4px;
     border: 2px solid #ffffff2b;
     font-family: Helvetica;
+    background-size: 2%;
+    background-position: 50% 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     background: var(--bg);
 }
-.square:after {
+.square:not(.dsct):after {
     content: "";
     position: absolute;
     width: 50%;
@@ -445,7 +453,7 @@ h2 {
     background: var(--bg);
     filter: saturate(2);
 }
-.light-selector .square:after {
+.light-selector .square:not(.dsct):after {
     filter: saturate(6);
 }
 
@@ -1092,23 +1100,38 @@ const allStyles = {
         fontMono: 'Source Code Pro',
         color: '#2E333C'
     },
-    'greg': {
-        regularBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
-        timeChargingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
-        timeTickingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
-        timeDoneBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd)',
+    'gregclock': {
+        regularBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd?CLOCK)',
+        timeChargingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd?CLOCK)',
+        timeTickingBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd?CLOCK)',
+        timeDoneBackground: 'url(https://avatars.worldcubeassociation.org/68mjzzxk46b0w90w15kkoe70yodd?CLOCK)',
         fontRegular: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'Comic Relief', cursive, sans-serif",
         fontMono: 'Wingdings',
-        color: '#fff'
+        color: '#fff',
+        dontShowCoolThingies: true,
+        dsctDesc: "This style uses advanced features - click to test it out!"
     },
-    'greg-run': {
-        regularBackground: 'url(https://files.catbox.moe/eak1wz.jpg)',
-        timeChargingBackground: 'url(https://files.catbox.moe/1rje5x.jpg)',
-        timeTickingBackground: 'url(https://files.catbox.moe/4cidg2.gif)',
-        timeDoneBackground: 'url(https://files.catbox.moe/eak1wz.jpg)',
+    'gregrun': {
+        regularBackground: 'url(https://files.catbox.moe/eak1wz.jpg?RUN1)',
+        timeChargingBackground: 'url(https://files.catbox.moe/1rje5x.jpg?RUN2)',
+        timeTickingBackground: 'url(https://files.catbox.moe/4cidg2.gif?RUN3)',
+        timeDoneBackground: 'url(https://files.catbox.moe/eak1wz.jpg?RUN1)',
         fontRegular: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'Comic Relief', cursive, sans-serif",
         fontMono: 'JetBrains Mono',
-        color: '#fff'
+        color: '#fff',
+        dontShowCoolThingies: true,
+        dsctDesc: "This style uses advanced features - click to test it out!"
+    },
+    'terraria-crimson': {
+        regularBackground: 'url(https://raw.githack.com/GavinGoGaming/cubingclub/refs/heads/main/assets/crimson_1.png)',
+        timeChargingBackground: 'url(https://raw.githack.com/GavinGoGaming/cubingclub/refs/heads/main/assets/crimson_2.png)',
+        timeTickingBackground: 'url(https://raw.githack.com/GavinGoGaming/cubingclub/refs/heads/main/assets/crimson_4.png)',
+        timeDoneBackground: 'url(https://raw.githack.com/GavinGoGaming/cubingclub/refs/heads/main/assets/crimson_2.png)',
+        fontRegular: 'Andy',
+        fontMono: 'Space Mono',
+        color: '#fff',
+        dontShowCoolThingies: true,
+        dsctDesc: "This style uses advanced features - click to test it out!"
     },
     'light-mint-breeze': {
         regularBackground: '#E0F5E9',
@@ -1395,15 +1418,17 @@ function extractValids() {
 Object.keys(allStyles).forEach(styleName => {
     let style = allStyles[styleName];
     var selector = "";
+    var dsct2 = `${style.dontShowCoolThingies ? ' dsct' : ''}`;
+    var dsct = `${style.dontShowCoolThingies ? 'none;background:' : ''}`;
     if(styleName.startsWith('light')) {
         selector = `
             <div class="theme-select light-selector" data-theme="${styleName}" style="background:#ccc;color:${style.color}">
                 <b style="font-family:'${style.fontRegular}';">${styleName} <span style="font-family:'${style.fontMono}';">style</span></b>
                 <div class="tiles">
-                    <div class="square" style="--bg:${style.regularBackground}"></div>
-                    <div class="square" style="--bg:${style.timeChargingBackground}"></div>
-                    <div class="square" style="--bg:${style.timeTickingBackground}"></div>
-                    <div class="square" style="--bg:${style.timeDoneBackground}"></div>
+                    ${style.dontShowCoolThingies ? style.dsctDesc : `<div class="square${dsct2}" style="--bg:${style.regularBackground}"></div>
+                    <div class="square${dsct2}" style="--bg:${style.timeChargingBackground}"></div>
+                    <div class="square${dsct2}" style="--bg:${style.timeTickingBackground}"></div>
+                    <div class="square${dsct2}" style="--bg:${style.timeDoneBackground}"></div>`}
                 </div>
             </div>
 `;
@@ -1412,9 +1437,9 @@ Object.keys(allStyles).forEach(styleName => {
             <div class="theme-select" data-theme="${styleName}" style="background:${style.regularBackground};color:${style.color}">
                 <b style="font-family:'${style.fontRegular}';">${styleName} <span style="font-family:'${style.fontMono}';">style</span></b>
                 <div class="tiles">
-                    <div class="square" style="--bg:${style.timeChargingBackground}"></div>
-                    <div class="square" style="--bg:${style.timeTickingBackground}"></div>
-                    <div class="square" style="--bg:${style.timeDoneBackground}"></div>
+                    ${style.dontShowCoolThingies ? style.dsctDesc : `<div class="square${dsct2}" style="--bg:${style.timeChargingBackground}"></div>
+                    <div class="square${dsct2}" style="--bg:${style.timeTickingBackground}"></div>
+                    <div class="square${dsct2}" style="--bg:${style.timeDoneBackground}"></div>`}
                 </div>
             </div>
 `;
