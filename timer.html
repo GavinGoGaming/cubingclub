@@ -93,6 +93,13 @@ body {
     color: rgb(107, 255, 107);
 }
 
+.row .delete {
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+}
 .row .delete i {
     color: rgb(255, 126, 126);
 }
@@ -722,7 +729,10 @@ function removeTime(valueToRemove) {
     }
     const storedArray = localStorage.getItem("cubetime_"+sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
-    const updatedArray = array.filter(item => item !== valueToRemove);
+    const updatedArray = array.filter((item, index, arr) => {
+        const firstIndex = arr.indexOf(valueToRemove);
+        return index !== firstIndex || item !== valueToRemove;
+    });
     updateAverage(updatedArray);
     localStorage.setItem('cubetime_'+sel_profile, JSON.stringify(updatedArray));
 }
