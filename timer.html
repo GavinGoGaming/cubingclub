@@ -280,6 +280,7 @@ a:link:hover {
     display: flex;
 }
 .left-p {
+    position: relative;
     height: 100%;
     width: 100%;
 }
@@ -354,7 +355,7 @@ input {
     color: var(--font-color);
 }
 .not-scrambled {
-    color: #888;
+    color: var(--font-color);
 }
 .current-time {
     display: flex;
@@ -488,6 +489,7 @@ h2 {
     font-size: 16px;
     padding: 4px 2px;
     border-radius: 4px;
+    width: 100%;
 }
 #theme-maker select:focus {
     outline: none !important;
@@ -499,6 +501,75 @@ h2 {
     padding: 4px 6px;
     color: var(--font-color);
     border-radius: 6px;
+}
+.stackmat-area {
+    color: var(--font-color);
+    gap: 4px;
+    font-size: 14px;
+    position: absolute;
+    bottom: -10px;
+}
+.stackmat-indicators {
+    background: #70707030;
+    border-radius: 4px;
+    padding: 3px 8px;
+    user-select: none;
+}
+.hoverable-smi {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.hoverable-smi:hover {
+    background: #70707040;
+    color: #ddd;
+    font-size: 15px;
+}
+.stackmat-hand:hover {
+    color: white;
+}
+.algorithm-box {
+    width: 130px;
+    border-radius: 8px;
+    height: 200px;
+    position: absolute;
+    right: 10px;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 4px 0;
+    box-sizing: border-box;
+    background: #ffffff0a;
+}
+.algorithm-box b {
+    color: var(--font-color);
+}
+.inner-algs {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100% - 20px);
+    width: calc(100% - 10px);
+    background: #ffffff30;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.alg-item {
+    width: 100%;
+    padding: 2px;
+    cursor: pointer;
+    background: #00000060;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    color: var(--font-color);
+    font-size: 14px;
+}
+.alg-item:hover {
+    background: #00000040;
+    color: var(--font-color);
+    font-size: 16px;
 }
 </style>
 </head>
@@ -539,6 +610,21 @@ h2 {
         <br>
         <div class="current-time">
             <h2></h2>
+        </div>
+        <div class="algorithm-box">
+            <b>Algorithms</b>
+            <div class="inner-algs">
+            </div>
+        </div>
+        <div class="scramble stackmat-area">
+            <div class="stackmat-indicators hoverable-smi">
+                No stackmat
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <div class="stackmat-indicators">
+                <i data-ht="Left Hand"  class="fa-solid fa-hand hover-text stackmat-hand fa-flip-horizontal"></i>
+                <i data-ht="Right Hand" class="fa-solid fa-hand hover-text stackmat-hand"></i>
+            </div>
         </div>
     </div>
     <div class="right-p">
@@ -1550,6 +1636,41 @@ document.querySelector('.apply-canvas button').addEventListener('click', ()=>{
     window.localStorage.setItem('style', JSON.stringify(canvas));
 });
 updateDisplayFromCanvas();
+
+let hoverTexts = [];
+
+function newHT(){}
+
+document.querySelectorAll('.hover-text').forEach(ht => {
+    ht.addEventListener('mousemove',  () => { });
+    ht.addEventListener('mouseenter', () => { hoverTexts[ht]=(newHT()); });
+    ht.addEventListener('mouseleave', () => { hoverTexts[ht]=null; });
+})
+
+
+
+
+
+// Alg box
+const githack = "https://raw.githack.com/gavingogaming/cubingclub/main/";
+const ghuc = "https://raw.githubusercontent.com/gavingogaming/cubingclub/main/";
+var algData = null;
+fetch(githack + "algs/all.json")
+    .then(d => d.json())
+    .then(d => {
+        algData = d;
+
+        d.forEach(alg => {
+            var e = document.createElement('div');
+            e.className = "alg-item";
+            e.dataset.page = alg.page;
+            e.textContent = alg.title;
+            document.querySelector('.inner-algs').appendChild(e);
+        })
+    })
+    .catch((err) => {
+        document.querySelector('.inner-algs').insertAdjacentHTML('beforeend', `<span style="margin:auto;">Failed load</span>`)
+    })
 </script>
     
 </body>
