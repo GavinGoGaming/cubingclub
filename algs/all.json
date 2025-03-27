@@ -1,9 +1,5 @@
 [
   {
-    "title": "1x1 Parity",
-    "page": "algs/1x1pt.html"
-  },
-  {
     "title": "4x4 OLL Parity",
     "page": "algs/4x4oll.html"
   },
