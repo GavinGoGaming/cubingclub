@@ -1,26 +1,26 @@
 [
   {
-    "title": "4x4 OLL Parity",
+    "title": "Alg: 4 OLL Par.",
     "page": "algs/4x4oll.html"
   },
   {
-    "title": "4x4 PLL Parity",
+    "title": "Alg: 4 PLL Par.",
     "page": "algs/4x4pll.html"
   },
   {
-    "title": "SQ1 Parity",
+    "title": "Alg: SQ1 Par.",
     "page": "algs/sq1p.html"
   },
   {
-    "title": "ZBLL",
+    "title": "Alg: ZBLL",
     "page": "algs/zbll.html"
   },
   {
-    "title": "3x3 OLL",
+    "title": "Alg: 3x3 OLL",
     "page": "algs/3x3oll.html"
   },
   {
-    "title": "7 Simul",
-    "page": "algs/simul.html"
+    "title": "Tool: AlgorithmTyper",
+    "page": "algs/algtype.html"
   }
 ]
