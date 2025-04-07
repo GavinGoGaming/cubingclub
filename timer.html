@@ -576,6 +576,48 @@ h2 {
     color: var(--font-color);
     font-size: 16px;
 }
+
+.alg-show {
+    display: flex;
+    align-items: safe center;
+    justify-content: safe center;
+    padding: 4px;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.1);
+    top: 0px;
+    left: 0px;
+    flex-direction: column;
+    position: absolute;
+    backdrop-filter: blur(10px);
+    overflow-y: scroll;
+    z-index: 99;
+}
+
+.close-alg-show {
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    font-size: 25px;
+    color: #ff7070;
+    background: #ffcccc;
+    border-radius: 50%;
+    height: 24px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    border: 2px solid #ffaaaa;
+}
+.close-alg-show:hover {
+    color: #ff5050;
+}
+code {
+    font-family: var(--font-mono);
+}
 </style>
 </head>
 <body>
@@ -642,6 +684,13 @@ h2 {
             </div>
         </div>
     </div>
+</div>
+
+<div class="close-alg-show hidden">
+    <i class="fa-solid fa-circle-x"></i>
+</div>
+<div class="alg-show hidden">
+    
 </div>
 
 <div class="settings">
@@ -1657,10 +1706,14 @@ document.querySelectorAll('.hover-text').forEach(ht => {
 
 
 // Alg box
-const githack = "https://raw.githack.com/gavingogaming/cubingclub/main/";
+document.querySelector('.close-alg-show').addEventListener('click', (event)=>{
+    document.querySelector('.alg-show').classList.add('hidden');
+    document.querySelector('.close-alg-show').classList.add('hidden');
+})
+const githack = "https://rawcdn.githack.com/gavingogaming/cubingclub/main/";
 const ghuc = "https://raw.githubusercontent.com/gavingogaming/cubingclub/main/";
 var algData = null;
-fetch(githack + "algs/all.json")
+fetch(ghuc + "algs/all.json")
     .then(d => d.json())
     .then(d => {
         algData = d;
@@ -1670,11 +1723,19 @@ fetch(githack + "algs/all.json")
             e.className = "alg-item";
             e.dataset.page = alg.page;
             e.textContent = alg.title;
+            e.addEventListener('click', (evnt)=>{
+                fetch(ghuc + alg.page).then(d => d.text())
+                    .then(pg => {
+                        document.querySelector('.alg-show').classList.remove('hidden');
+                        document.querySelector('.close-alg-show').classList.remove('hidden');
+                        document.querySelector('.alg-show').innerHTML = pg;
+                    })
+            })
             document.querySelector('.inner-algs').appendChild(e);
         })
     })
     .catch((err) => {
-        document.querySelector('.inner-algs').insertAdjacentHTML('beforeend', `<span style="margin:auto;">Failed load</span>`)
+        document.querySelector('.inner-algs').insertAdjacentHTML('beforeend', `<span style="margin:auto;">${err.message}</span>`)
     })
 </script>
     
