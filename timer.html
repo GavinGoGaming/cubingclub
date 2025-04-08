@@ -72,8 +72,11 @@ body {
     border: 1px solid #ffffff0f;
     padding: 4px;
     display: flex;
-    justify-content: space-between;
     gap: 2px;
+}
+
+.time-display {
+    width: 100%;
 }
 
 .row button {
@@ -93,7 +96,7 @@ body {
     color: rgb(107, 255, 107);
 }
 
-.row .delete {
+.row .delete, .row .dnf {
     width: 20px;
     display: flex;
     align-items: center;
@@ -102,6 +105,9 @@ body {
 }
 .row .delete i {
     color: rgb(255, 126, 126);
+}
+.row .dnf i {
+    color: rgb(255, 89, 89);
 }
 
 .row .theme i {
@@ -676,7 +682,7 @@ code {
     </div>
     <div class="right-p">
         <div class="times">
-            <span><b>Avg:</b><span id="avg"></span></span>
+            <span><b>Avg (all):</b><span id="avg"></span></span>
             <div class="row keep">
                 <button class="add"><i class="fa-solid fa-message-plus"></i></button>
                 <button class="clear"><i class="fa-solid fa-trash-xmark"></i></button>
@@ -757,6 +763,12 @@ code {
                 <span>Keybind [temporary]:</span>
                 <i class="edit">Space</i>
             </div>
+            <div class="setting-row">
+                <span>Debugging:</span>
+            </div>
+            <div class="setting-row">
+                <button style="background:transparent;border:none;color:lightblue;font-size:20px;" id='alertLS'>alertLS</button>
+            </div>
         </div>
     </div>
 </div>
@@ -810,13 +822,75 @@ items.forEach(menuItem => {
     });
 });
 
-function addTimeItem(time) {
+// Function to generate a UUID
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+function updateTimeById(id, newTime) {
+    // Validate the new time
+    try {
+        const parsedTime = parseFloat(newTime);
+        if (isNaN(parsedTime)) {
+            throw new Error("Invalid time format");
+        }
+
+        // Get current times from localStorage
+        if (!localStorage.getItem("cubetime_" + sel_profile)) {
+            return false; // No data exists yet
+        }
+
+        const storedArray = localStorage.getItem("cubetime_" + sel_profile);
+        const array = storedArray ? JSON.parse(storedArray) : [];
+
+        // Find and update the entry with matching ID
+        let found = false;
+        const updatedArray = array.map(entry => {
+            if (typeof entry === 'object' && entry.id === id) {
+                found = true;
+                return {
+                    ...entry,
+                    time: newTime
+                };
+            }
+            return entry;
+        });
+
+        if (!found) {
+            return false;
+        }
+        localStorage.setItem('cubetime_' + sel_profile, JSON.stringify(updatedArray));
+        updateAverage(updatedArray);
+        return true;
+    } catch (ex) {
+        console.error("Error updating time:", ex);
+        return false;
+    }
+}
+
+function addTimeItem(timeEntry) {
+    // Support both old format (just time string) and new format (object with id and time)
+    let time, id;
+    if (typeof timeEntry === 'object') {
+        time = timeEntry.time;
+        id = timeEntry.id;
+    } else {
+        time = timeEntry;
+        id = generateUUID(); // Generate ID for legacy entries
+    }
+
     if (!time) time = '0'; // 0s
     const row = document.createElement('div');
     row.className = 'row';
+    row.dataset.id = id; // Store ID in the DOM element
 
     const timeDisplay = document.createElement('span');
-    timeDisplay.textContent = time + 's';
+    timeDisplay.className = 'time-display';
+    timeDisplay.textContent = (time < 0 ? 'DNF' : time + 's');
 
     const deleteButton = document.createElement('button');
     const icon = document.createElement('i');
@@ -829,79 +903,135 @@ function addTimeItem(time) {
         setTimeout(() => {
             row.remove();
         }, 600);
-        removeTime(time);
+        removeTime(id);
     };
 
     row.appendChild(timeDisplay);
     row.appendChild(deleteButton);
+
+    const dnfButton = document.createElement('button');
+    const dnfIcon = document.createElement('i');
+    dnfIcon.className = "fa-solid fa-flag";
+    dnfButton.className = 'dnf';
+    dnfButton.appendChild(dnfIcon);
+    dnfButton.onclick = () => {
+        var sure = confirm("Do you want to DNF this entry?");
+        if(sure) {
+            updateTimeById(id, -1);
+            timeDisplay.textContent = "DNF";
+        }
+    };
+    row.appendChild(dnfButton);
+
     times.appendChild(row);
 }
+
 const clear = document.querySelector('.clear');
 const add = document.querySelector('.add');
 clear.addEventListener('click', () => {
     if (confirm("Clear all times?")) {
-        window.localStorage.setItem('cubetime_'+sel_profile, []);
-        document.querySelectorAll('.row:not(.keep)').forEach(r=>r.remove());
+        window.localStorage.setItem('cubetime_' + sel_profile, JSON.stringify([]));
+        document.querySelectorAll('.row:not(.keep)').forEach(r => r.remove());
         document.querySelector('#avg').textContent = "None";
     }
 });
+
 add.addEventListener('click', () => {
     const time = prompt("Input time (ex. 1.20)", "");
     try {
         parseFloat(time);
-        addTimeToLS(time);
-        addTimeItem(time);
+        const timeEntry = {
+            id: generateUUID(),
+            time: time
+        };
+        addTimeToLS(timeEntry);
+        addTimeItem(timeEntry);
     } catch (ex) {
         alert("Not a time.");
     }
 });
+
 function updateAverage(times) {
     if (times.length < 1) {
-        document.querySelector('#avg').innerText = 'None'
+        document.querySelector('#avg').innerText = 'None';
+        return;
     }
-    let timesAsNumbers = times.map(time => parseFloat(time));
+
+    // Extract time values from time entries
+    let timesAsNumbers = times.map(entry => {
+        // Handle both old format (just time string) and new format (object with time)
+        const timeValue = typeof entry === 'object' ? entry.time : entry;
+        return parseFloat(timeValue);
+    });
+    times = times.filter(z => {
+        if(z > 0) return true;
+        return false;
+    })
+
     const average = timesAsNumbers.reduce((a, b) => a + b) / timesAsNumbers.length;
     document.querySelector('#avg').innerText = average.toFixed(3);
 }
-function removeTime(valueToRemove) {
-    if (!localStorage.getItem("cubetime_"+sel_profile)) {
-        localStorage.setItem('cubetime_'+sel_profile, []);
+
+function removeTime(id) {
+    if (!localStorage.getItem("cubetime_" + sel_profile)) {
+        localStorage.setItem('cubetime_' + sel_profile, JSON.stringify([]));
     }
-    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
+
+    const storedArray = localStorage.getItem("cubetime_" + sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
-    const updatedArray = array.filter((item, index, arr) => {
-        const firstIndex = arr.indexOf(valueToRemove);
-        return index !== firstIndex || item !== valueToRemove;
+
+    // Filter out the entry with the matching ID
+    const updatedArray = array.filter(entry => {
+        // If entry is an object with ID, check ID
+        if (typeof entry === 'object' && entry.id) {
+            return entry.id !== id;
+        }
+        // For legacy entries that might still be in the array
+        return true;
     });
+
     updateAverage(updatedArray);
-    localStorage.setItem('cubetime_'+sel_profile, JSON.stringify(updatedArray));
+    localStorage.setItem('cubetime_' + sel_profile, JSON.stringify(updatedArray));
 }
-function addTimeToLS(valueToRemove) {
-    if (!localStorage.getItem("cubetime_"+sel_profile)) {
-        localStorage.setItem('cubetime_'+sel_profile, []);
+
+function addTimeToLS(timeEntry) {
+    if (!localStorage.getItem("cubetime_" + sel_profile)) {
+        localStorage.setItem('cubetime_' + sel_profile, JSON.stringify([]));
     }
-    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
+
+    const storedArray = localStorage.getItem("cubetime_" + sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
-    array.push(valueToRemove);
-    localStorage.setItem('cubetime_'+sel_profile, JSON.stringify(array));
+    array.push(timeEntry);
+    localStorage.setItem('cubetime_' + sel_profile, JSON.stringify(array));
 }
+
 function saveTime(time) {
-    if (!localStorage.getItem("cubetime_"+sel_profile)) {
-        localStorage.setItem('cubetime_'+sel_profile, []);
+    if (!localStorage.getItem("cubetime_" + sel_profile)) {
+        localStorage.setItem('cubetime_' + sel_profile, JSON.stringify([]));
     }
-    addTimeToLS(time);
-    addTimeItem(time);
-    updateAverage(JSON.parse(localStorage.getItem("cubetime_"+sel_profile)));
+
+    const timeEntry = {
+        id: generateUUID(),
+        time: time
+    };
+
+    addTimeToLS(timeEntry);
+    addTimeItem(timeEntry);
+    updateAverage(JSON.parse(localStorage.getItem("cubetime_" + sel_profile)));
 }
+
 function loadTimes() {
-    if (!localStorage.getItem("cubetime_"+sel_profile)) {
-        localStorage.setItem('cubetime_'+sel_profile, []);
+    if (!localStorage.getItem("cubetime_" + sel_profile)) {
+        localStorage.setItem('cubetime_' + sel_profile, JSON.stringify([]));
     }
-    const storedArray = localStorage.getItem("cubetime_"+sel_profile);
+
+    const storedArray = localStorage.getItem("cubetime_" + sel_profile);
     const array = storedArray ? JSON.parse(storedArray) : [];
-    array.forEach(time => {
-        addTimeItem(time);
+
+    array.forEach(entry => {
+        addTimeItem(entry);
     });
+
     updateAverage(array);
 }
 
@@ -909,7 +1039,7 @@ key.addEventListener('click', () => {
     listeningforkey = true;
     timing = false;
     over = false;
-})
+});
 
 function setState(state) {
     document.documentElement.className = state;
@@ -944,7 +1074,8 @@ document.body.addEventListener('keydown', (e) => {
             setState("charge");
         }
     }
-})
+});
+
 document.body.addEventListener('keyup', (e) => {
     if (listeningforkey || jwlfk) { return; }
     if (e.key == selkey) {
@@ -958,7 +1089,7 @@ document.body.addEventListener('keyup', (e) => {
             over = false;
         }
     }
-})
+});
 
 setInterval(() => {
     if (jwlfk) {
@@ -1737,6 +1868,14 @@ fetch(ghuc + "algs/all.json")
     .catch((err) => {
         document.querySelector('.inner-algs').insertAdjacentHTML('beforeend', `<span style="margin:auto;">${err.message}</span>`)
     })
+
+// Debugs
+document.querySelector('#alertLS')
+    .addEventListener('click', (f) => {
+        document.querySelector('.alg-show').classList.remove('hidden');
+        document.querySelector('.close-alg-show').classList.remove('hidden');
+        document.querySelector('.alg-show').innerHTML = JSON.stringify(window.localStorage, null, 1).replaceAll('\n','<br/>');
+})
 </script>
     
 </body>
