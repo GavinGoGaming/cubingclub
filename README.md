@@ -8,7 +8,7 @@ Content: Front page
 ### Timer
 Located: timer.html
 
-Content: timer webapp - styles, timings, averages, styles, etc
+Content: timer webapp - styles, timings, averages, scrambling, etc
 ### Scrambler API (v1, deprecated)
 Located: scrambled_browser.js
 
